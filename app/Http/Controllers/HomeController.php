@@ -36,32 +36,48 @@ class HomeController extends Controller
      * Show the authenticated user dashboard (newsfeed)
      * Main page after login - shows personalized request feed
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $user = auth()->user();
         
-        // Get requests based on user role
+        // Build base query based on user role
         if ($user->isAdmin()) {
             // Admins see all requests
-            $requests = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments'])
-                ->latest()
-                ->paginate(15);
+            $query = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments']);
         } elseif ($user->isTechnician()) {
             // Technicians see all requests but prioritize assigned ones
-            $requests = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments'])
-                ->where(function($query) use ($user) {
-                    $query->where('assigned_to', $user->id)
-                          ->orWhere('is_public', true);
-                })
-                ->latest()
-                ->paginate(15);
+            $query = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments'])
+                ->where(function($q) use ($user) {
+                    $q->where('assigned_to', $user->id)
+                      ->orWhere('is_public', true);
+                });
         } else {
             // Regular users see public requests
-            $requests = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments'])
-                ->public()
-                ->latest()
-                ->paginate(15);
+            $query = MaintenanceRequest::with(['user', 'category', 'assignedTechnician', 'comments'])
+                ->public();
         }
+
+        // Apply category filter if specified
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Apply status filter if specified
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Apply search filter if specified
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+
+        $requests = $query->latest()->paginate(15);
 
         // Get categories for quick filtering
         $categories = Category::active()->orderBy('priority')->get();

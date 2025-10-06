@@ -81,14 +81,15 @@
                 
                 <div class="space-y-2">
                     <a href="{{ route('dashboard') }}" 
-                       class="block px-3 py-2 text-sm rounded-lg {{ request()->get('category') ? 'text-gray-600 hover:bg-gray-50' : 'bg-blue-50 text-blue-600 font-medium' }}">
+                       class="flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200 {{ request()->get('category') ? 'text-gray-600 hover:bg-gray-50 hover:text-gray-800' : 'bg-blue-100 text-blue-700 font-medium border-l-4 border-blue-500' }}">
+                        <span class="inline-block w-3 h-3 rounded-full mr-3 bg-gray-400"></span>
                         All Categories
                     </a>
                     
                     @foreach($categories as $category)
                     <a href="{{ route('dashboard') }}?category={{ $category->id }}" 
-                       class="block px-3 py-2 text-sm rounded-lg {{ request()->get('category') == $category->id ? 'text-blue-600 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
-                        <span class="inline-block w-3 h-3 rounded-full mr-2" style="background-color: {{ $category->color }};"></span>
+                       class="flex items-center px-3 py-2 text-sm rounded-lg transition-all duration-200 {{ request()->get('category') == $category->id ? 'bg-blue-100 text-blue-700 font-medium border-l-4 border-blue-500' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800' }}">
+                        <span class="inline-block w-3 h-3 rounded-full mr-3" style="background-color: {{ $category->color }};"></span>
                         {{ $category->name }}
                     </a>
                     @endforeach
@@ -107,8 +108,24 @@
                             @elseif(auth()->user()->isTechnician()) Request Feed
                             @else Community Requests
                             @endif
+                            @if(request()->get('category'))
+                                @php
+                                    $selectedCategory = $categories->firstWhere('id', request()->get('category'));
+                                @endphp
+                                @if($selectedCategory)
+                                    <span class="text-lg font-normal text-gray-600"> - {{ $selectedCategory->name }}</span>
+                                @endif
+                            @endif
                         </h2>
-                        <p class="text-gray-600 mt-1">Stay updated with the latest maintenance requests</p>
+                        <div class="flex items-center gap-4 mt-1">
+                            <p class="text-gray-600">Stay updated with the latest maintenance requests</p>
+                            @if(request()->get('category'))
+                                <a href="{{ route('dashboard') }}" 
+                                   class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                    ← Clear Filter
+                                </a>
+                            @endif
+                        </div>
                     </div>
                     
                     <a href="{{ route('requests.create') }}" 
@@ -117,6 +134,23 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Results Info -->
+            @if($requests->total() > 0)
+                <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+                    <p class="text-sm text-gray-600">
+                        Showing {{ $requests->count() }} of {{ $requests->total() }} requests
+                        @if(request()->get('category'))
+                            @php
+                                $selectedCategory = $categories->firstWhere('id', request()->get('category'));
+                            @endphp
+                            @if($selectedCategory)
+                                in <span class="font-medium text-gray-900">{{ $selectedCategory->name }}</span>
+                            @endif
+                        @endif
+                    </p>
+                </div>
+            @endif
 
             <!-- Requests Feed -->
             @forelse($requests as $request)
