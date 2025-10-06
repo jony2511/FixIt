@@ -1,0 +1,261 @@
+@extends('layouts.app')
+
+@section('title', $request->title)
+
+@section('content')
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Request Details -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-200">
+            <div class="flex items-start justify-between">
+                <div class="flex items-center">
+                    <img class="h-12 w-12 rounded-full" 
+                         src="{{ $request->user->avatar_url }}" 
+                         alt="{{ $request->user->name }}">
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-gray-900">{{ $request->title }}</h1>
+                        <div class="flex items-center text-sm text-gray-500 mt-1">
+                            <span>{{ $request->user->name }}</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ $request->created_at->format('M j, Y \a\t g:i A') }}</span>
+                            <span class="mx-2">•</span>
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                </svg>
+                                {{ $request->location }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    @if($request->category)
+                        <span class="px-3 py-1 text-sm font-medium rounded-full" 
+                              style="background-color: {{ $request->category->color }}20; color: {{ $request->category->color }};">
+                            {{ $request->category->name }}
+                        </span>
+                    @endif
+                    
+                    <span class="px-3 py-1 text-sm font-medium rounded-full {{ $request->priority_badge_color }}">
+                        {{ $request->priority_name }} Priority
+                    </span>
+                    
+                    <span class="px-3 py-1 text-sm font-medium rounded-full {{ $request->status_badge_color }}">
+                        {{ $request->status_name }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6">
+            <div class="prose max-w-none">
+                <p class="text-gray-700 leading-relaxed whitespace-pre-line">{{ $request->description }}</p>
+            </div>
+            
+            <!-- Files -->
+            @if($request->files->count() > 0)
+                <div class="mt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Attachments</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach($request->files as $file)
+                            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                @if($file->is_image)
+                                    <img src="{{ $file->file_url }}" 
+                                         alt="{{ $file->original_name }}" 
+                                         class="w-full h-32 object-cover">
+                                @else
+                                    <div class="w-full h-32 bg-gray-100 flex items-center justify-center">
+                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                @endif
+                                <div class="p-2">
+                                    <p class="text-xs text-gray-600 truncate" title="{{ $file->original_name }}">
+                                        {{ $file->original_name }}
+                                    </p>
+                                    <p class="text-xs text-gray-400">{{ $file->formatted_size }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
+        
+        <!-- Admin Actions -->
+        @if(auth()->user()->canManageRequests())
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div>
+                        @if($request->assignedTechnician)
+                            <p class="text-sm text-gray-600">
+                                Assigned to: <span class="font-medium">{{ $request->assignedTechnician->name }}</span>
+                            </p>
+                        @else
+                            <p class="text-sm text-gray-600">Not assigned yet</p>
+                        @endif
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        @if($request->canBeAssigned() && count($technicians) > 0)
+                            <form method="POST" action="{{ route('requests.assign', $request) }}" class="inline">
+                                @csrf
+                                <select name="technician_id" class="text-sm border-gray-300 rounded">
+                                    <option value="">Assign to...</option>
+                                    @foreach($technicians as $technician)
+                                        <option value="{{ $technician->id }}">{{ $technician->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="ml-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                    Assign
+                                </button>
+                            </form>
+                        @endif
+                        
+                        @if($request->canBeStarted() && $request->assigned_to === auth()->id())
+                            <form method="POST" action="{{ route('requests.start', $request) }}" class="inline">
+                                @csrf
+                                <button type="submit" class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                    Start Work
+                                </button>
+                            </form>
+                        @endif
+                        
+                        @if($request->canBeCompleted() && ($request->assigned_to === auth()->id() || auth()->user()->isAdmin()))
+                            <form method="POST" action="{{ route('requests.complete', $request) }}" class="inline">
+                                @csrf
+                                <button type="submit" class="px-3 py-1 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                                    Mark Complete
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <!-- Comments Section -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-900">
+                Comments ({{ $request->comments->count() }})
+            </h2>
+        </div>
+        
+        <!-- Add Comment Form -->
+        <div class="p-6 border-b border-gray-200 bg-gray-50">
+            <form method="POST" action="{{ route('requests.comments.store', $request) }}">
+                @csrf
+                <div class="flex items-start space-x-4">
+                    <img class="h-10 w-10 rounded-full" src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
+                    <div class="flex-1">
+                        <textarea name="content" 
+                                  rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                  placeholder="Add a comment..."
+                                  required></textarea>
+                        
+                        <div class="flex items-center justify-between mt-3">
+                            @if(auth()->user()->canManageRequests())
+                                <label class="flex items-center text-sm text-gray-600">
+                                    <input type="checkbox" name="is_internal" value="1" class="mr-2">
+                                    Internal comment (visible to technicians/admin only)
+                                </label>
+                            @else
+                                <div></div>
+                            @endif
+                            
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                                Post Comment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Comments List -->
+        <div class="divide-y divide-gray-200">
+            @forelse($request->comments as $comment)
+                <div class="p-6 {{ $comment->is_internal ? 'bg-yellow-50' : '' }}">
+                    <div class="flex items-start space-x-4">
+                        <img class="h-10 w-10 rounded-full" 
+                             src="{{ $comment->user->avatar_url }}" 
+                             alt="{{ $comment->user->name }}">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+                                <h4 class="font-medium text-gray-900">{{ $comment->user->name }}</h4>
+                                <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                
+                                @if($comment->is_internal)
+                                    <span class="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-full">
+                                        Internal
+                                    </span>
+                                @endif
+                                
+                                @if($comment->is_update)
+                                    <span class="px-2 py-1 text-xs bg-blue-200 text-blue-800 rounded-full">
+                                        System Update
+                                    </span>
+                                @endif
+                            </div>
+                            <p class="mt-2 text-gray-700 whitespace-pre-line">{{ $comment->content }}</p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-6 text-center text-gray-500">
+                    <p>No comments yet. Be the first to comment!</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+    <div class="relative max-w-4xl max-h-full">
+        <button onclick="closeImageModal()" 
+                class="absolute top-4 right-4 text-white bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <img id="modalImage" src="" alt="" class="max-w-full max-h-full rounded-lg shadow-lg">
+        <div class="absolute bottom-4 left-4 right-4 text-center">
+            <p id="modalImageName" class="text-white bg-black bg-opacity-50 rounded px-3 py-1 text-sm"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+function openImageModal(imageSrc, imageName) {
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('modalImageName').textContent = imageName;
+    document.getElementById('imageModal').classList.remove('hidden');
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+}
+
+// Close modal when clicking outside the image
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImageModal();
+    }
+});
+
+// Close modal with escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
+</script>
+@endsection
