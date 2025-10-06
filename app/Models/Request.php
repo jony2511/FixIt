@@ -52,6 +52,17 @@ class Request extends Model
         ];
     }
 
+    /**
+     * The model's default values for attributes.
+     */
+    protected $attributes = [
+        'status' => 'pending',
+        'priority' => 'medium',
+        'is_urgent' => false,
+        'is_public' => true,
+        'views_count' => 0,
+    ];
+
     // ===== RELATIONSHIPS =====
 
     /**
@@ -74,6 +85,14 @@ class Request extends Model
      * Get the technician assigned to this request
      */
     public function assignedTechnician()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    /**
+     * Alias for assignedTechnician (for compatibility)
+     */
+    public function assignedTo()
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
@@ -219,7 +238,11 @@ class Request extends Model
      */
     public function canBeAssigned(): bool
     {
-        return $this->status === 'pending';
+        // If status is null/empty, treat as pending (default)
+        $status = $this->status ?: 'pending';
+        
+        // Allow assignment for pending requests or reassignment for assigned requests
+        return in_array($status, ['pending', 'assigned']);
     }
 
     /**

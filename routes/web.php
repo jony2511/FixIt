@@ -40,8 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // ===== ADMIN ROUTES =====
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users.index');
     Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('users.show');
     Route::put('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');

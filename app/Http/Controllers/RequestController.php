@@ -166,34 +166,47 @@ class RequestController extends Controller
     /**
      * Assign request to technician
      */
-    public function assign(Request $request, MaintenanceRequest $maintenanceRequest)
+    public function assign(Request $httpRequest, MaintenanceRequest $request)
     {
         if (!auth()->user()->canManageRequests()) {
             abort(403, 'Access denied.');
         }
 
-        $validated = $request->validate([
+        $validated = $httpRequest->validate([
             'technician_id' => 'required|exists:users,id',
         ]);
 
-        $technician = User::findOrFail($validated['technician_id']);
-        
-        if (!$technician->isTechnician()) {
-            return back()->with('error', 'Selected user is not a technician.');
+        try {
+            $technician = User::findOrFail($validated['technician_id']);
+            
+            if (!$technician->isTechnician() && !$technician->isAdmin()) {
+                return back()->with('error', 'Selected user is not a technician or admin.');
+            }
+
+            // Check if request can be assigned
+            if (!$request->canBeAssigned()) {
+                $status = $request->status ?: 'unknown';
+                return back()->with('error', "This request cannot be assigned. Current status: '{$status}'. Only pending or assigned requests can be (re)assigned.");
+            }
+
+            $request->assignTo($technician);
+
+            // Add system comment
+            Comment::create([
+                'request_id' => $request->id,
+                'user_id' => auth()->id(),
+                'content' => "Request assigned to {$technician->name}",
+                'is_internal' => false,
+                'is_update' => true,
+            ]);
+
+            return back()->with('success', "Request assigned to {$technician->name}");
+            
+        } catch (\Exception $e) {
+            \Log::error('Request assignment failed: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return back()->with('error', 'Failed to assign request. Please try again or contact administrator.');
         }
-
-        $maintenanceRequest->assignTo($technician);
-
-        // Add system comment
-        Comment::create([
-            'request_id' => $maintenanceRequest->id,
-            'user_id' => auth()->id(),
-            'content' => "Request assigned to {$technician->name}",
-            'is_internal' => false,
-            'is_update' => true,
-        ]);
-
-        return back()->with('success', "Request assigned to {$technician->name}");
     }
 
     /**

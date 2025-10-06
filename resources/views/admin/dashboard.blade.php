@@ -132,10 +132,10 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                @if($request->assignedTo)
+                                @if($request->assignedTechnician)
                                     <div class="flex items-center">
-                                        <img class="h-6 w-6 rounded-full mr-2" src="{{ $request->assignedTo->avatar_url }}" alt="">
-                                        {{ $request->assignedTo->name }}
+                                        <img class="h-6 w-6 rounded-full mr-2" src="{{ $request->assignedTechnician->avatar_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($request->assignedTechnician->name) }}" alt="">
+                                        {{ $request->assignedTechnician->name }}
                                     </div>
                                 @else
                                     <span class="text-gray-400">Unassigned</span>
@@ -148,7 +148,7 @@
                                 <a href="{{ route('requests.show', $request) }}" 
                                    class="text-blue-600 hover:text-blue-900">View</a>
                                 
-                                @if(!$request->assignedTo)
+                                @if(!$request->assignedTechnician)
                                     <button onclick="openAssignModal('{{ $request->id }}')" 
                                             class="text-purple-600 hover:text-purple-900">Assign</button>
                                 @endif
@@ -164,4 +164,67 @@
         </div>
     </div>
 </div>
+
+<!-- Assignment Modal -->
+<div id="assignModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Assign Request to Technician</h3>
+            
+            <form id="assignForm" method="POST" action="">
+                @csrf
+                <div class="mb-4">
+                    <label for="technician_id" class="block text-sm font-medium text-gray-700 mb-2">
+                        Select Technician
+                    </label>
+                    <select name="technician_id" id="technician_id" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Choose a technician...</option>
+                        @foreach($technicians as $technician)
+                            <option value="{{ $technician->id }}">
+                                {{ $technician->name }} ({{ ucfirst($technician->role) }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" 
+                            onclick="closeAssignModal()"
+                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-200">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">
+                        Assign Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentRequestId = null;
+
+function openAssignModal(requestId) {
+    currentRequestId = requestId;
+    const form = document.getElementById('assignForm');
+    form.action = `/requests/${requestId}/assign`;
+    document.getElementById('assignModal').classList.remove('hidden');
+}
+
+function closeAssignModal() {
+    document.getElementById('assignModal').classList.add('hidden');
+    document.getElementById('technician_id').value = '';
+}
+
+// Close modal when clicking outside
+document.getElementById('assignModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeAssignModal();
+    }
+});
+</script>
+
 @endsection
