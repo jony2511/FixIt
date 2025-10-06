@@ -95,6 +95,122 @@
                     @endforeach
                 </div>
             </div>
+
+            <!-- AI Maintenance Assistant -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6" x-data="aiChat()">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    AI Maintenance Assistant
+                    <span class="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">BETA</span>
+                </h3>
+                
+                <!-- Chat Messages -->
+                <div class="mb-4 h-64 overflow-y-auto bg-gray-50 rounded-lg p-4 space-y-3" x-ref="chatContainer">
+                    <!-- Welcome Message -->
+                    <div class="flex items-start space-x-2">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white p-3 rounded-lg shadow-sm border">
+                                <p class="text-sm text-gray-800">👋 Hi! I'm your AI maintenance assistant. Ask me about plumbing, electrical, HVAC, IT, cleaning, or any facility maintenance questions!</p>
+                                <span class="text-xs text-gray-500 mt-1 block">Now</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Messages -->
+                    <template x-for="message in messages" :key="message.id">
+                        <div class="flex items-start space-x-2" :class="message.type === 'user' ? 'justify-end' : ''">
+                            <!-- AI Avatar -->
+                            <div x-show="message.type === 'ai'" class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            
+                            <div class="flex-1 max-w-xs">
+                                <div class="p-3 rounded-lg shadow-sm border" 
+                                     :class="message.type === 'user' ? 'bg-blue-600 text-white ml-auto' : 'bg-white text-gray-800'">
+                                    <p class="text-sm" x-text="message.content"></p>
+                                    <span class="text-xs mt-1 block" 
+                                          :class="message.type === 'user' ? 'text-blue-200' : 'text-gray-500'" 
+                                          x-text="message.timestamp"></span>
+                                </div>
+                            </div>
+
+                            <!-- User Avatar -->
+                            <div x-show="message.type === 'user'" class="flex-shrink-0 w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Loading indicator -->
+                    <div x-show="loading" class="flex items-start space-x-2">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white p-3 rounded-lg shadow-sm border">
+                                <p class="text-sm text-gray-600">AI is thinking...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Form -->
+                <form @submit.prevent="sendMessage()" class="flex space-x-2">
+                    <input 
+                        type="text" 
+                        x-model="currentMessage"
+                        placeholder="Ask about maintenance issues..."
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        :disabled="loading"
+                        maxlength="500">
+                    <button 
+                        type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 text-sm font-medium"
+                        :disabled="loading || currentMessage.trim() === ''">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Quick Suggestions -->
+                <div class="mt-3 flex flex-wrap gap-1">
+                    <button @click="askQuestion('My toilet is clogged, what should I do?')" 
+                            class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs transition duration-200">
+                        💧 Plumbing
+                    </button>
+                    <button @click="askQuestion('My computer won\'t turn on')" 
+                            class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs transition duration-200">
+                        💻 IT help
+                    </button>
+                    <button @click="askQuestion('The heating isn\'t working')" 
+                            class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs transition duration-200">
+                        🌡️ HVAC
+                    </button>
+                    <button @click="askQuestion('The lights keep flickering')" 
+                            class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs transition duration-200">
+                        ⚡ Electrical
+                    </button>
+                    <button @click="askQuestion('How do I create a maintenance request?')" 
+                            class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-xs transition duration-200">
+                        📝 Create Request
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Main Content - Request Feed -->
@@ -282,4 +398,94 @@
         </div>
     </div>
 </div>
+
+<script>
+function aiChat() {
+    return {
+        messages: [],
+        currentMessage: '',
+        loading: false,
+        messageId: 1,
+
+        sendMessage() {
+            if (this.currentMessage.trim() === '' || this.loading) return;
+
+            const message = this.currentMessage.trim();
+            
+            // Add user message
+            this.messages.push({
+                id: this.messageId++,
+                type: 'user',
+                content: message,
+                timestamp: this.getCurrentTime()
+            });
+
+            // Clear input and show loading
+            this.currentMessage = '';
+            this.loading = true;
+            this.scrollToBottom();
+
+            // Send to AI API
+            fetch('{{ route("ai.chat") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    question: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.loading = false;
+                
+                // Add AI response
+                this.messages.push({
+                    id: this.messageId++,
+                    type: 'ai',
+                    content: data.response || 'Sorry, I encountered an error. Please try again.',
+                    timestamp: data.timestamp || this.getCurrentTime()
+                });
+                
+                this.scrollToBottom();
+            })
+            .catch(error => {
+                this.loading = false;
+                console.error('AI Chat Error:', error);
+                
+                this.messages.push({
+                    id: this.messageId++,
+                    type: 'ai',
+                    content: 'I\'m having trouble connecting right now. Please try again in a moment, or create a maintenance request for immediate help.',
+                    timestamp: this.getCurrentTime()
+                });
+                
+                this.scrollToBottom();
+            });
+        },
+
+        askQuestion(question) {
+            this.currentMessage = question;
+            this.sendMessage();
+        },
+
+        getCurrentTime() {
+            return new Date().toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false
+            });
+        },
+
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const container = this.$refs.chatContainer;
+                container.scrollTop = container.scrollHeight;
+            });
+        }
+    }
+}
+</script>
+
 @endsection

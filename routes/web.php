@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AIChatController;
 use Illuminate\Support\Facades\Route;
 
 // ===== PUBLIC ROUTES =====
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Assigned Requests (for technicians)
     Route::get('/assigned-requests', [RequestController::class, 'assignedRequests'])->name('requests.assigned');
+    
+    // AI Chat
+    Route::post('/ai-chat', [AIChatController::class, 'chat'])->name('ai.chat');
 });
 
 // ===== ADMIN ROUTES =====
