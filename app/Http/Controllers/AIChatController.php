@@ -20,19 +20,20 @@ class AIChatController extends Controller
         try {
             $question = $request->question;
             
-            // Create a maintenance-focused context for the AI
-            $systemPrompt = "You are a helpful maintenance assistant for FixIT, a facility management system. 
-                           Provide concise, practical advice about facility maintenance issues like plumbing, 
-                           electrical, HVAC, IT support, cleaning, security, and general maintenance. 
-                           Keep responses under 200 words and focus on actionable solutions. 
-                           If you cannot help with something, politely redirect to creating a maintenance request.";
+            // Create a general-purpose AI context 
+            $systemPrompt = "You are an intelligent AI assistant integrated into FixIT, a facility management system. 
+                           You can answer ANY question - whether it's about maintenance, general knowledge, science, 
+                           technology, cooking, travel, or any topic the user asks about. 
+                           Provide helpful, accurate, and concise responses (under 200 words). 
+                           Be friendly, professional, and informative. If asked about maintenance specifically, 
+                           you can also suggest creating a maintenance request in the FixIT system for hands-on help.";
 
-            // Try to get AI response using Hugging Face's free API
-            $response = $this->getHuggingFaceResponse($question, $systemPrompt);
+            // Always try Gemini AI first
+            $response = $this->getGeminiResponse($question, $systemPrompt);
             
+            // Only use fallback if Gemini completely fails
             if (!$response) {
-                // Fallback to rule-based responses
-                $response = $this->getFallbackResponse($question);
+                $response = "I'm having trouble connecting to my AI service right now. Please try again in a moment, or create a maintenance request if you need immediate technical assistance.";
             }
 
             return response()->json([
@@ -53,104 +54,84 @@ class AIChatController extends Controller
     }
 
     /**
-     * Get response from Hugging Face free API
+     * Get response from Google Gemini AI API
      */
-    private function getHuggingFaceResponse($question, $systemPrompt)
+    private function getGeminiResponse($question, $systemPrompt)
     {
         try {
+            $apiKey = env('GEMINI_API_KEY');
+            if (!$apiKey) {
+                Log::warning('Gemini API key not configured');
+                return null;
+            }
+
             $client = new Client();
             
-            // Using a free model from Hugging Face
-            $response = $client->post('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', [
+            // Combine system prompt with user question
+            $fullPrompt = $systemPrompt . "\n\nUser: " . $question . "\n\nAssistant:";
+            
+            Log::info('Sending request to Gemini AI', ['question' => $question]);
+            
+            // Use the working Gemini 2.0 Flash model
+            $response = $client->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}", [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . env('HUGGINGFACE_API_KEY', ''), // Optional - works without key but with rate limits
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [
-                    'inputs' => $systemPrompt . "\n\nUser: " . $question . "\nAssistant:",
-                    'parameters' => [
-                        'max_length' => 200,
-                        'temperature' => 0.7,
-                        'return_full_text' => false
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => $fullPrompt
+                                ]
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.8,
+                        'maxOutputTokens' => 300,
                     ]
                 ],
-                'timeout' => 10
+                'timeout' => 20
             ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
+            $statusCode = $response->getStatusCode();
+            $body = $response->getBody()->getContents();
+            $data = json_decode($body, true);
             
-            if (isset($data[0]['generated_text'])) {
-                return trim($data[0]['generated_text']);
+            Log::info('Gemini API Response', [
+                'status' => $statusCode,
+                'has_candidates' => isset($data['candidates']),
+                'response_keys' => array_keys($data ?? [])
+            ]);
+            
+            // Extract the generated text from Gemini's response
+            if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+                $aiResponse = trim($data['candidates'][0]['content']['parts'][0]['text']);
+                Log::info('Gemini AI response successful', ['response_length' => strlen($aiResponse)]);
+                return "🤖 **Gemini AI:** " . $aiResponse;
             }
             
+            // Check for errors in response
+            if (isset($data['error'])) {
+                Log::error('Gemini API Error', ['error' => $data['error']]);
+                return null;
+            }
+            
+            Log::warning('Gemini API returned unexpected response format', ['data' => $data]);
             return null;
+            
         } catch (\Exception $e) {
-            Log::warning('Hugging Face API failed: ' . $e->getMessage());
+            Log::error('Gemini AI API failed', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'question' => $question
+            ]);
             return null;
         }
     }
 
-    /**
-     * Fallback rule-based responses for common maintenance questions
-     */
-    private function getFallbackResponse($question)
-    {
-        $question = strtolower($question);
-        
-        // Common maintenance keywords and responses
-        $responses = [
-            // Plumbing
-            ['keywords' => ['plumb', 'toilet', 'clog', 'leak', 'drain', 'faucet', 'sink'], 
-             'response' => "🔧 **Plumbing Help:** First, check if it's a simple blockage. For toilets, try plunging first. For leaks, turn off the water supply under the fixture. If there's flooding or no hot water, please create an urgent maintenance request immediately. Never use chemical drain cleaners on severe blockages."],
-            
-            // Electrical
-            ['keywords' => ['electric', 'power', 'outlet', 'light', 'switch', 'breaker', 'spark'], 
-             'response' => "⚡ **Electrical Safety:** Never attempt DIY electrical work! If power is out, check your circuit breaker panel first. For flickering lights or sparking outlets, turn off power at the breaker immediately and create an urgent maintenance request. This could be a fire hazard."],
-            
-            // HVAC
-            ['keywords' => ['hvac', 'heat', 'cool', 'air', 'temperature', 'thermostat', 'vent'], 
-             'response' => "🌡️ **HVAC Troubleshooting:** 1) Check and replace air filter if dirty 2) Ensure all vents are open and unblocked 3) Check thermostat settings and replace batteries 4) For radiators, check if pilot light is on. If still not working, create a maintenance request."],
-            
-            // IT Support
-            ['keywords' => ['computer', 'laptop', 'wifi', 'internet', 'network', 'printer', 'screen'], 
-             'response' => "💻 **IT Quick Fixes:** 1) Try restarting your device first 2) Check all cable connections 3) For network issues, restart your router/modem 4) Clear browser cache for web issues. If problems persist, create an IT support request with specific error messages."],
-            
-            // Cleaning
-            ['keywords' => ['clean', 'dirty', 'trash', 'garbage', 'mess', 'sanitize'], 
-             'response' => "🧽 **Cleaning Services:** For routine cleaning, ensure areas are clear of personal items. For deep cleaning or special requirements (carpet cleaning, window washing), please submit a detailed cleaning request. Emergency spills should be reported immediately."],
-            
-            // Security
-            ['keywords' => ['lock', 'key', 'door', 'security', 'access', 'card'], 
-             'response' => "🔐 **Security Issues:** Never force stuck locks! For lost keys/cards, contact security immediately. For broken locks or security concerns, create an urgent maintenance request. Your safety is our priority - don't hesitate to report any security issues."],
-            
-            // Water Issues
-            ['keywords' => ['water', 'pressure', 'hot', 'cold', 'shower', 'bath'], 
-             'response' => "💧 **Water Problems:** If no water, check if it's building-wide first. For low pressure, try cleaning faucet aerators. Run cold water for 2-3 minutes if discolored. No hot water or persistent issues need a maintenance request with location details."],
-            
-            // Maintenance Requests
-            ['keywords' => ['request', 'submit', 'create', 'help', 'problem'], 
-             'response' => "📝 **Creating Requests:** To submit a maintenance request: 1) Click 'New Request' 2) Choose the right category 3) Describe the issue clearly 4) Add photos if helpful 5) Set priority level. Our team will respond based on urgency!"],
 
-            // General Greetings
-            ['keywords' => ['hello', 'hi', 'hey', 'help'], 
-             'response' => "👋 **Welcome!** I'm here to help with maintenance questions! I can assist with plumbing, electrical, HVAC, IT, cleaning, and security issues. Try asking about a specific problem, or use the quick suggestion buttons below."]
-        ];
 
-        // Check for keyword matches
-        foreach ($responses as $response) {
-            foreach ($response['keywords'] as $keyword) {
-                if (strpos($question, $keyword) !== false) {
-                    return $response['response'];
-                }
-            }
-        }
 
-        // Special responses for common questions
-        if (strpos($question, '?') !== false) {
-            return "🤔 **Great Question!** I'd be happy to help with your maintenance question. For the most accurate assistance, try being specific about the issue (e.g., 'toilet won't flush' or 'no hot water'). You can also create a detailed maintenance request for expert technical support!";
-        }
-
-        // Default response
-        return "🏢 **FixIT Assistant:** I'm here to help with facility maintenance questions! Ask me about plumbing, electrical, HVAC, IT support, cleaning, or security issues. For complex problems, I'll guide you to create a maintenance request where our expert technicians can provide hands-on help.";
-    }
 }
