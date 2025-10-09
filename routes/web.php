@@ -50,7 +50,13 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('users.show');
     Route::put('/users/{user}/role', [AdminController::class, 'updateUserRole'])->name('users.update-role');
     Route::put('/users/{user}/toggle-active', [AdminController::class, 'toggleUserActive'])->name('users.toggle-active');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/categories', [AdminController::class, 'categories'])->name('categories.index');
+    Route::get('/categories/create', [AdminController::class, 'createCategory'])->name('categories.create');
+    Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [AdminController::class, 'editCategory'])->name('categories.edit');
+    Route::put('/categories/{category}', [AdminController::class, 'updateCategory'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminController::class, 'destroyCategory'])->name('categories.destroy');
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
 });
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Request as MaintenanceRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -88,6 +89,72 @@ class AdminController extends Controller
         return redirect()->back()->with('success', "User has been {$status} successfully!");
     }
 
+    public function destroyUser(User $user)
+    {
+        try {
+            // Prevent deleting the current admin user
+            if ($user->id === auth()->id()) {
+                return redirect()->back()
+                    ->with('error', 'You cannot delete your own account while logged in.');
+            }
+
+            // Check if user has active requests
+            $activeRequests = $user->requests()->whereNotIn('status', ['completed', 'cancelled'])->count();
+            
+            if ($activeRequests > 0) {
+                return redirect()->back()
+                    ->with('error', "Cannot delete user '{$user->name}' because they have {$activeRequests} active maintenance requests. Please complete or reassign these requests first.");
+            }
+
+            // Check if user is assigned as a technician to active requests
+            $assignedRequests = MaintenanceRequest::where('assigned_to', $user->id)
+                ->whereNotIn('status', ['completed', 'cancelled'])
+                ->count();
+                
+            if ($assignedRequests > 0) {
+                return redirect()->back()
+                    ->with('error', "Cannot delete user '{$user->name}' because they are assigned to {$assignedRequests} active maintenance requests. Please reassign these requests first.");
+            }
+
+            // If user has completed requests, keep them for historical data but anonymize
+            $completedRequests = $user->requests()->where('status', 'completed')->count();
+            $assignedCompletedRequests = MaintenanceRequest::where('assigned_to', $user->id)
+                ->where('status', 'completed')
+                ->count();
+
+            if ($completedRequests > 0 || $assignedCompletedRequests > 0) {
+                // Anonymize user data instead of complete deletion for data integrity
+                $user->update([
+                    'name' => 'Deleted User #' . $user->id,
+                    'email' => 'deleted_user_' . $user->id . '@deleted.local',
+                    'is_active' => false,
+                    'role' => 'user',
+                    'phone' => null,
+                    'address' => null,
+                    'department' => null,
+                    'employee_id' => null,
+                    'bio' => null,
+                    'avatar' => null,
+                ]);
+
+                return redirect()->back()
+                    ->with('success', "User account has been anonymized successfully. Historical data has been preserved for completed requests.");
+            } else {
+                // Safe to completely delete - no historical data
+                $userName = $user->name;
+                $user->delete();
+                
+                return redirect()->back()
+                    ->with('success', "User '{$userName}' has been permanently deleted from the system.");
+            }
+
+        } catch (\Exception $e) {
+            Log::error('User deletion error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Unable to delete user. Please try again or contact system administrator.');
+        }
+    }
+
     public function categories()
     {
         try {
@@ -106,6 +173,99 @@ class AdminController extends Controller
             Log::error('Admin categories error: ' . $e->getMessage());
             return redirect()->route('admin.dashboard')
                 ->with('error', 'Unable to load categories. Please try again.');
+        }
+    }
+
+    public function createCategory()
+    {
+        return view('admin.categories.create');
+    }
+
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:500',
+            'icon' => 'nullable|string|max:100',
+            'color' => 'nullable|string|max:20',
+            'is_active' => 'boolean',
+        ]);
+
+        try {
+            \App\Models\Category::create([
+                'name' => $request->name,
+                'slug' => \Str::slug($request->name),
+                'description' => $request->description,
+                'icon' => $request->icon,
+                'color' => $request->color ?? 'blue',
+                'is_active' => $request->has('is_active'),
+                'priority' => \App\Models\Category::max('priority') + 1,
+            ]);
+
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category created successfully!');
+        } catch (\Exception $e) {
+            Log::error('Category creation error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Unable to create category. Please try again.')
+                ->withInput();
+        }
+    }
+
+    public function editCategory(\App\Models\Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    public function updateCategory(Request $request, \App\Models\Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string|max:500',
+            'icon' => 'nullable|string|max:100',
+            'color' => 'nullable|string|max:20',
+            'is_active' => 'boolean',
+        ]);
+
+        try {
+            $category->update([
+                'name' => $request->name,
+                'slug' => \Str::slug($request->name),
+                'description' => $request->description,
+                'icon' => $request->icon,
+                'color' => $request->color ?? 'blue',
+                'is_active' => $request->has('is_active'),
+            ]);
+
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Category update error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Unable to update category. Please try again.')
+                ->withInput();
+        }
+    }
+
+    public function destroyCategory(\App\Models\Category $category)
+    {
+        try {
+            // Check if category has requests
+            $requestCount = $category->requests()->count();
+            
+            if ($requestCount > 0) {
+                return redirect()->back()
+                    ->with('error', "Cannot delete category '{$category->name}' because it has {$requestCount} associated requests. Please reassign the requests first.");
+            }
+
+            $category->delete();
+            
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category deleted successfully!');
+        } catch (\Exception $e) {
+            Log::error('Category deletion error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Unable to delete category. Please try again.');
         }
     }
 

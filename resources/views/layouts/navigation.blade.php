@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Enhanced Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ auth()->check() ? route('dashboard') : route('home') }}" class="flex items-center space-x-3 group">
+                    <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
                         <div class="relative">
                             <div class="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
                                 <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

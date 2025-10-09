@@ -133,16 +133,31 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {{ $user->created_at->format('M d, Y') }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <a href="{{ route('admin.users.show', $user) }}" class="text-blue-600 hover:text-blue-900">View</a>
-                            
-                            <form method="POST" action="{{ route('admin.users.toggle-active', $user) }}" class="inline">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="text-{{ $user->is_active ? 'red' : 'green' }}-600 hover:text-{{ $user->is_active ? 'red' : 'green' }}-900">
-                                    {{ $user->is_active ? 'Deactivate' : 'Activate' }}
-                                </button>
-                            </form>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <div class="flex space-x-2">
+                                <a href="{{ route('admin.users.show', $user) }}" 
+                                   class="text-blue-600 hover:text-blue-900">View</a>
+                                
+                                <form method="POST" action="{{ route('admin.users.toggle-active', $user) }}" class="inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="text-{{ $user->is_active ? 'orange' : 'green' }}-600 hover:text-{{ $user->is_active ? 'orange' : 'green' }}-900">
+                                        {{ $user->is_active ? 'Deactivate' : 'Activate' }}
+                                    </button>
+                                </form>
+
+                                @if($user->id !== auth()->id())
+                                <form method="POST" action="{{ route('admin.users.destroy', $user) }}" 
+                                      class="inline"
+                                      onsubmit="return confirmUserDeletion('{{ $user->name }}', {{ $user->requests()->count() }}, {{ $user->requests()->where('status', 'completed')->count() }})">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                </form>
+                                @else
+                                <span class="text-gray-400 cursor-not-allowed" title="Cannot delete your own account">Delete</span>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -160,4 +175,36 @@
         </div>
     </div>
 </div>
+
+<script>
+function confirmUserDeletion(userName, totalRequests, completedRequests) {
+    let message = `⚠️ DELETE USER CONFIRMATION\n\n`;
+    message += `You are about to delete user: "${userName}"\n\n`;
+    
+    if (totalRequests > 0) {
+        message += `⚠️ WARNING: This user has ${totalRequests} maintenance request(s).\n`;
+        
+        if (completedRequests > 0) {
+            message += `• ${completedRequests} completed request(s) - User data will be anonymized to preserve history\n`;
+        }
+        
+        const activeRequests = totalRequests - completedRequests;
+        if (activeRequests > 0) {
+            message += `• ${activeRequests} active request(s) - These must be completed or reassigned first\n\n`;
+            message += `❌ DELETION BLOCKED: Please handle active requests before deletion.\n\n`;
+            alert(message);
+            return false;
+        } else {
+            message += `\n✅ User account will be anonymized (not completely deleted) to preserve completed request history.\n\n`;
+        }
+    } else {
+        message += `✅ User has no maintenance requests and can be safely deleted.\n\n`;
+    }
+    
+    message += `This action cannot be undone!\n\n`;
+    message += `Do you want to proceed?`;
+    
+    return confirm(message);
+}
+</script>
 @endsection
