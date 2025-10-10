@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\RequestFile;
 use App\Models\Product;
+use App\Notifications\CommentAddedNotification;
+use App\Notifications\TechnicianAssignedNotification;
+use App\Notifications\RequestAssignedNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -218,6 +221,14 @@ class RequestController extends Controller
                 'is_update' => true,
             ]);
 
+            // Send notification to request owner (if they're not the one assigning)
+            if (auth()->id() !== $request->user_id) {
+                $request->user->notify(new TechnicianAssignedNotification($request, $technician));
+            }
+
+            // Send notification to the technician
+            $technician->notify(new RequestAssignedNotification($request));
+
             return back()->with('success', "Request assigned to {$technician->name}");
             
         } catch (\Exception $e) {
@@ -289,14 +300,14 @@ class RequestController extends Controller
     /**
      * Add comment to request
      */
-    public function addComment(Request $request, MaintenanceRequest $maintenanceRequest)
+    public function addComment(Request $httpRequest, MaintenanceRequest $request)
     {
-        $validated = $request->validate([
+        $validated = $httpRequest->validate([
             'content' => 'required|string|max:1000',
             'is_internal' => 'boolean'
         ]);
 
-        $comment = $maintenanceRequest->comments()->create([
+        $comment = $request->comments()->create([
             'user_id' => auth()->id(),
             'content' => $validated['content'],
             'is_internal' => $validated['is_internal'] ?? false,
@@ -305,8 +316,15 @@ class RequestController extends Controller
         // Load user relationship
         $comment->load('user');
 
+        // Send notification to request owner if commenter is not the owner
+        if (auth()->id() !== $request->user_id) {
+            $request->user->notify(
+                new CommentAddedNotification($request, auth()->user(), $validated['content'])
+            );
+        }
+
         // Return JSON for AJAX requests
-        if ($request->wantsJson()) {
+        if ($httpRequest->wantsJson()) {
             return response()->json([
                 'success' => true,
                 'comment' => [
@@ -319,12 +337,12 @@ class RequestController extends Controller
                         'avatar_url' => $comment->user->avatar_url,
                     ]
                 ],
-                'total_comments' => $maintenanceRequest->comments()->count()
+                'total_comments' => $request->comments()->count()
             ]);
         }
 
         return redirect()
-            ->route('requests.show', $maintenanceRequest)
+            ->route('requests.show', $request)
             ->with('success', 'Comment added successfully!');
     }
 

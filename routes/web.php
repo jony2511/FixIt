@@ -29,6 +29,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard (newsfeed)
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     
+    // Notification Routes
+    Route::get('/notifications/get', [\App\Http\Controllers\NotificationController::class, 'getNotifications'])->name('notifications.get');
+    Route::get('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::delete('/notifications/{id}', [\App\Http\Controllers\NotificationController::class, 'destroy'])->name('notifications.destroy');
+    
     // Request Routes
     Route::get('/requests', [RequestController::class, 'index'])->name('requests.index');
     Route::get('/requests/create', [RequestController::class, 'create'])->name('requests.create');

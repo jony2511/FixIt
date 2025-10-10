@@ -67,6 +67,45 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
+                    <!-- Notification Bell -->
+                    <div class="relative mr-4" x-data="{ open: false }">
+                        <button @click="open = !open; if(open) loadNotifications();" class="relative text-gray-600 hover:text-blue-600 transition focus:outline-none">
+                            <i class="fas fa-bell text-xl"></i>
+                            @php
+                                $unreadCount = auth()->user()->unreadNotifications->count();
+                            @endphp
+                            @if($unreadCount > 0)
+                                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div x-show="open" 
+                             @click.away="open = false"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-95"
+                             class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+                             style="display: none;">
+                            <div class="p-4 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
+                            </div>
+                            <div class="max-h-96 overflow-y-auto" id="notifications-container">
+                                <div class="p-4 text-center text-gray-500">Loading...</div>
+                            </div>
+                            <div class="p-3 border-t border-gray-200 text-center">
+                                <button onclick="markAllAsRead()" class="text-sm text-blue-600 hover:text-blue-700">
+                                    Mark all as read
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Cart Icon -->
                     <a href="{{ route('cart.index') }}" class="relative mr-4 text-gray-600 hover:text-blue-600 transition">
                         <i class="fas fa-shopping-cart text-xl"></i>
@@ -233,3 +272,99 @@
         @endauth
     </div>
 </nav>
+
+@auth
+<script>
+function loadNotifications() {
+    fetch('/notifications/get')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('notifications-container');
+            if (data.notifications && data.notifications.length > 0) {
+                container.innerHTML = data.notifications.map(notification => {
+                    const isUnread = !notification.read_at;
+                    const iconClass = getNotificationIcon(notification.data.type);
+                    const colorClass = getNotificationColor(notification.data.type);
+                    
+                    return `
+                        <a href="/notifications/${notification.id}/read" 
+                           class="block p-3 border-b border-gray-100 hover:bg-gray-50 transition ${isUnread ? 'bg-blue-50' : ''}">
+                            <div class="flex items-start">
+                                <div class="mr-3 mt-1">
+                                    <i class="fas fa-${iconClass} text-${colorClass}-500"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-800">${notification.data.title || 'Notification'}</p>
+                                    <p class="text-xs text-gray-600 mt-1">${notification.data.message || ''}</p>
+                                    <p class="text-xs text-gray-400 mt-1">${formatTime(notification.created_at)}</p>
+                                </div>
+                                ${isUnread ? '<div class="w-2 h-2 bg-blue-500 rounded-full ml-2 mt-2"></div>' : ''}
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+            } else {
+                container.innerHTML = '<div class="p-4 text-center text-gray-500">No notifications yet</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading notifications:', error);
+            document.getElementById('notifications-container').innerHTML = 
+                '<div class="p-4 text-center text-red-500">Error loading notifications</div>';
+        });
+}
+
+function markAllAsRead() {
+    fetch('/notifications/mark-all-read', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+        }
+    }).then(() => {
+        location.reload();
+    });
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        'comment': 'comment',
+        'technician_assigned': 'user-cog',
+        'request_assigned': 'clipboard-check',
+        'order_status': 'shopping-bag'
+    };
+    return icons[type] || 'bell';
+}
+
+function getNotificationColor(type) {
+    const colors = {
+        'comment': 'blue',
+        'technician_assigned': 'green',
+        'request_assigned': 'purple',
+        'order_status': 'orange'
+    };
+    return colors[type] || 'gray';
+}
+
+function formatTime(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000); // difference in seconds
+    
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return Math.floor(diff / 60) + ' minutes ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + ' hours ago';
+    if (diff < 604800) return Math.floor(diff / 86400) + ' days ago';
+    
+    return date.toLocaleDateString();
+}
+
+// Auto-refresh notifications every 30 seconds
+setInterval(() => {
+    const container = document.getElementById('notifications-container');
+    if (container && container.innerHTML.indexOf('Loading') === -1) {
+        loadNotifications();
+    }
+}, 30000);
+</script>
+@endauth

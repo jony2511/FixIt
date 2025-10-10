@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Request as MaintenanceRequest;
 use App\Models\Product;
 use App\Models\Order;
+use App\Notifications\OrderStatusChangedNotification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -477,11 +478,19 @@ class AdminController extends Controller
             'payment_status' => 'nullable|in:pending,paid,failed',
         ]);
 
+        // Store old status for notification
+        $oldStatus = $order->order_status;
+        
         $order->update($validated);
 
         if ($order->order_status === 'delivered' && !$order->delivered_at) {
             $order->delivered_at = now();
             $order->save();
+        }
+
+        // Send notification if order status changed
+        if (isset($validated['order_status']) && $oldStatus !== $validated['order_status']) {
+            $order->user->notify(new OrderStatusChangedNotification($order, $oldStatus, $validated['order_status']));
         }
 
         return back()->with('success', 'Order status updated successfully!');
