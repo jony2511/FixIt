@@ -367,6 +367,62 @@
                                 @endif
                             </div>
                             <p class="mt-2 text-gray-700 whitespace-pre-line">{{ $comment->content }}</p>
+                            
+                            {{-- Display Suggested Products Cards if this is a product suggestion comment --}}
+                            @if($comment->is_update && str_contains($comment->content, 'Suggested') && str_contains($comment->content, 'replacement product'))
+                                @if($request->suggested_products && count($request->suggested_products) > 0)
+                                    @php
+                                        $commentProducts = \App\Models\Product::whereIn('id', $request->suggested_products)->get();
+                                    @endphp
+                                    @if($commentProducts->count() > 0)
+                                        <div class="mt-4 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
+                                            <h5 class="text-sm font-semibold text-green-800 mb-3 flex items-center">
+                                                <i class="fas fa-shopping-bag mr-2"></i>
+                                                Suggested Products:
+                                            </h5>
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                @foreach($commentProducts as $product)
+                                                    <div class="flex items-center gap-3 bg-white p-3 rounded-lg border border-green-200 shadow-sm hover:shadow-md transition">
+                                                        @if($product->image)
+                                                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                                                                class="w-20 h-20 object-cover rounded">
+                                                        @else
+                                                            <div class="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+                                                                <i class="fas fa-box text-gray-400 text-xl"></i>
+                                                            </div>
+                                                        @endif
+                                                        <div class="flex-grow">
+                                                            <h6 class="font-semibold text-sm text-gray-900">{{ $product->name }}</h6>
+                                                            <p class="text-xs text-gray-600 mb-2">
+                                                                <span class="font-bold text-green-600">${{ number_format($product->price, 2) }}</span>
+                                                                @if($product->brand)
+                                                                    • {{ $product->brand }}
+                                                                @endif
+                                                            </p>
+                                                            <div class="flex gap-2">
+                                                                <a href="{{ route('shop.show', $product) }}" 
+                                                                   class="text-xs px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition flex items-center">
+                                                                    <i class="fas fa-eye mr-1"></i>View Details
+                                                                </a>
+                                                                @if(!auth()->user()->canManageRequests())
+                                                                    <form action="{{ route('cart.add', $product) }}" method="POST" class="inline">
+                                                                        @csrf
+                                                                        <input type="hidden" name="quantity" value="1">
+                                                                        <button type="submit" 
+                                                                                class="text-xs px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition flex items-center">
+                                                                            <i class="fas fa-cart-plus mr-1"></i>Add to Cart
+                                                                        </button>
+                                                                    </form>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>

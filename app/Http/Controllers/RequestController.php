@@ -346,12 +346,24 @@ class RequestController extends Controller
             'replacement_notes' => $validated['replacement_notes'] ?? null,
         ]);
 
-        // Add comment about suggested products
+        // Get product details and create product links in comment
+        $products = Product::whereIn('id', $validated['product_ids'])->get();
+        $productDetails = $products->map(function($product) {
+            return "• {$product->name} - \${$product->price}";
+        })->join("\n");
+
+        // Add comment about suggested products with product details
         $productCount = count($validated['product_ids']);
+        $commentContent = "Suggested {$productCount} replacement product(s) for this request:\n\n{$productDetails}";
+        
+        if (!empty($validated['replacement_notes'])) {
+            $commentContent .= "\n\n" . $validated['replacement_notes'];
+        }
+
         Comment::create([
             'request_id' => $request->id,
             'user_id' => auth()->id(),
-            'content' => "Suggested {$productCount} replacement product(s) for this request. " . ($validated['replacement_notes'] ?? ''),
+            'content' => $commentContent,
             'is_internal' => false,
             'is_update' => true,
         ]);
