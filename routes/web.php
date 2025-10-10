@@ -94,6 +94,18 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::put('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
 });
 
+// ===== PAYMENT ROUTES =====
+// Protected payment initiation route
+Route::middleware('auth')->group(function () {
+    Route::get('/payment/initiate', [\App\Http\Controllers\PaymentController::class, 'initiatePayment'])->name('payment.initiate');
+});
+
+// Public payment callback routes (SSLCommerz callbacks)
+Route::post('/payment/success', [\App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::post('/payment/fail', [\App\Http\Controllers\PaymentController::class, 'paymentFail'])->name('payment.fail');
+Route::post('/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'paymentCancel'])->name('payment.cancel');
+Route::post('/payment/ipn', [\App\Http\Controllers\PaymentController::class, 'paymentIPN'])->name('payment.ipn');
+
 // ===== PROFILE ROUTES =====
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

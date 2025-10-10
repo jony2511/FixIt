@@ -35,6 +35,7 @@ class OrderController extends Controller
     {
         $request->validate([
             'shipping_name' => 'required|string|max:255',
+            'shipping_email' => 'required|email|max:255',
             'shipping_phone' => 'required|string|max:20',
             'shipping_address' => 'required|string',
             'shipping_city' => 'required|string|max:100',
@@ -47,6 +48,13 @@ class OrderController extends Controller
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('shop.index')->with('error', 'Your cart is empty!');
+        }
+
+        // For online payment, redirect to payment initiation
+        if ($request->payment_method === 'online') {
+            // Store shipping info in session temporarily
+            Session::put('checkout_data', $request->except('_token'));
+            return redirect()->route('payment.initiate');
         }
 
         try {
@@ -65,9 +73,10 @@ class OrderController extends Controller
                 'user_id' => Auth::id(),
                 'total_amount' => $cartItems->sum('subtotal'),
                 'payment_method' => $request->payment_method,
-                'payment_status' => $request->payment_method == 'cod' ? 'pending' : 'pending',
+                'payment_status' => 'pending',
                 'order_status' => 'pending',
                 'shipping_name' => $request->shipping_name,
+                'shipping_email' => $request->shipping_email,
                 'shipping_phone' => $request->shipping_phone,
                 'shipping_address' => $request->shipping_address,
                 'shipping_city' => $request->shipping_city,

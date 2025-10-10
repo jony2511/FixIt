@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'sslcommerz' => [
+        'store_id' => env('SSLCOMMERZ_STORE_ID'),
+        'store_password' => env('SSLCOMMERZ_STORE_PASSWORD'),
+        'api_url' => env('SSLCOMMERZ_API_URL', 'https://sandbox.sslcommerz.com'),
+        'mode' => env('SSLCOMMERZ_MODE', 'sandbox'), // sandbox or live
+    ],
+
 ];

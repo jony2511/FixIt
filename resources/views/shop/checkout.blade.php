@@ -30,6 +30,16 @@
                                 </div>
 
                                 <div>
+                                    <label for="shipping_email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                    <input type="email" name="shipping_email" id="shipping_email" required
+                                        value="{{ old('shipping_email', auth()->user()->email) }}"
+                                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    @error('shipping_email')
+                                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
                                     <label for="shipping_phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
                                     <input type="tel" name="shipping_phone" id="shipping_phone" required
                                         value="{{ old('shipping_phone', auth()->user()->phone) }}"
@@ -76,9 +86,11 @@
                                 <i class="fas fa-wallet mr-2"></i>Payment Method
                             </h3>
                             
-                            <div class="space-y-3">
-                                <label class="flex items-center p-4 border-2 border-blue-500 rounded-lg cursor-pointer bg-blue-50">
-                                    <input type="radio" name="payment_method" value="cod" checked
+                            <div class="space-y-3" x-data="{ selected: 'cod' }">
+                                <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition"
+                                    :class="selected === 'cod' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-blue-300'"
+                                    @click="selected = 'cod'">
+                                    <input type="radio" name="payment_method" value="cod" x-model="selected"
                                         class="w-4 h-4 text-blue-600 focus:ring-blue-500">
                                     <div class="ml-3 flex-grow">
                                         <span class="block font-semibold text-gray-800">
@@ -86,19 +98,43 @@
                                         </span>
                                         <span class="block text-sm text-gray-600">Pay when you receive your order</span>
                                     </div>
-                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Recommended</span>
+                                    <span x-show="selected === 'cod'" class="px-3 py-1 bg-blue-600 text-white text-xs rounded-full">Selected</span>
                                 </label>
 
-                                <label class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 opacity-50">
-                                    <input type="radio" name="payment_method" value="online" disabled
-                                        class="w-4 h-4 text-blue-600 focus:ring-blue-500">
+                                <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition"
+                                    :class="selected === 'online' ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-green-300'"
+                                    @click="selected = 'online'">
+                                    <input type="radio" name="payment_method" value="online" x-model="selected"
+                                        class="w-4 h-4 text-green-600 focus:ring-green-500">
                                     <div class="ml-3 flex-grow">
                                         <span class="block font-semibold text-gray-800">
-                                            <i class="fas fa-credit-card mr-2"></i>Online Payment
+                                            <i class="fas fa-credit-card mr-2"></i>Online Payment (SSLCommerz)
                                         </span>
-                                        <span class="block text-sm text-gray-600">Pay securely online (Coming Soon)</span>
+                                        <span class="block text-sm text-gray-600">Pay securely with credit/debit card, mobile banking</span>
+                                        <div class="flex gap-2 mt-2">
+                                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Visa</span>
+                                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Mastercard</span>
+                                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">bKash</span>
+                                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Nagad</span>
+                                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">Rocket</span>
+                                        </div>
                                     </div>
+                                    <span x-show="selected === 'online'" class="px-3 py-1 bg-green-600 text-white text-xs rounded-full">Selected</span>
                                 </label>
+
+                                <!-- Payment Method Description -->
+                                <div x-show="selected === 'online'" x-transition class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <div class="flex items-start">
+                                        <i class="fas fa-shield-alt text-green-600 mt-1 mr-3"></i>
+                                        <div>
+                                            <h4 class="font-semibold text-green-800">Secure Payment</h4>
+                                            <p class="text-sm text-green-700 mt-1">
+                                                Your payment is processed securely through SSLCommerz. 
+                                                You'll be redirected to the payment gateway after placing your order.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @error('payment_method')
                                 <p class="text-red-600 text-sm mt-2">{{ $message }}</p>

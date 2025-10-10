@@ -217,8 +217,15 @@
                                 </span>
                             @else
                                 <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">
-                                    <i class="fas fa-credit-card mr-1"></i>Online Payment
+                                    <i class="fas fa-credit-card mr-1"></i>Online Payment (SSLCommerz)
                                 </span>
+                            @endif
+
+                            @if($order->transaction_id)
+                                <div class="mt-3 pt-3 border-t border-gray-200">
+                                    <p class="text-xs text-gray-600 mb-1">Transaction ID:</p>
+                                    <p class="text-sm font-mono text-gray-800">{{ $order->transaction_id }}</p>
+                                </div>
                             @endif
                         </div>
 

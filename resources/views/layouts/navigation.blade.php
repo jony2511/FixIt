@@ -99,16 +99,20 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                <i class="fas fa-user mr-2"></i>{{ __('Profile') }}
                             </x-dropdown-link>
                             
                             <x-dropdown-link :href="route('requests.my')">
-                                {{ __('My Requests') }}
+                                <i class="fas fa-tools mr-2"></i>{{ __('My Requests') }}
+                            </x-dropdown-link>
+                            
+                            <x-dropdown-link :href="route('orders.index')">
+                                <i class="fas fa-shopping-bag mr-2"></i>{{ __('My Orders') }}
                             </x-dropdown-link>
 
                             @if(auth()->user()->isAdmin())
                                 <x-dropdown-link :href="route('admin.dashboard')">
-                                    {{ __('Admin Panel') }}
+                                    <i class="fas fa-cog mr-2"></i>{{ __('Admin Panel') }}
                                 </x-dropdown-link>
                             @endif
 
