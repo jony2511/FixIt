@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Request as MaintenanceRequest;
+use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -342,5 +345,145 @@ class AdminController extends Controller
         } else {
             return round($averageHours / 24, 1) . ' days';
         }
+    }
+
+    // ===== PRODUCT MANAGEMENT =====
+
+    public function products()
+    {
+        $products = Product::with('category')
+            ->withCount('orderItems')
+            ->latest()
+            ->paginate(15);
+
+        return view('admin.products', compact('products'));
+    }
+
+    public function createProduct()
+    {
+        $categories = \App\Models\Category::where('is_active', true)->get();
+        return view('admin.products.create', compact('categories'));
+    }
+
+    public function storeProduct(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'brand' => 'nullable|string|max:255',
+            'warranty' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        // Set stock status based on quantity
+        if ($validated['quantity'] == 0) {
+            $validated['stock_status'] = 'out_of_stock';
+        } elseif ($validated['quantity'] <= 10) {
+            $validated['stock_status'] = 'low_stock';
+        } else {
+            $validated['stock_status'] = 'in_stock';
+        }
+
+        Product::create($validated);
+
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
+    }
+
+    public function editProduct(Product $product)
+    {
+        $categories = \App\Models\Category::where('is_active', true)->get();
+        return view('admin.products.edit', compact('product', 'categories'));
+    }
+
+    public function updateProduct(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'brand' => 'nullable|string|max:255',
+            'warranty' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($validated);
+        $product->updateStockStatus();
+
+        return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
+    }
+
+    public function destroyProduct(Product $product)
+    {
+        // Check if product has orders
+        $orderCount = $product->orderItems()->count();
+        
+        if ($orderCount > 0) {
+            return back()->with('error', "Cannot delete this product. It has {$orderCount} order(s). Consider deactivating it instead.");
+        }
+
+        // Delete image
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
+        $product->delete();
+
+        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
+    }
+
+    public function toggleProductActive(Product $product)
+    {
+        $product->is_active = !$product->is_active;
+        $product->save();
+
+        $status = $product->is_active ? 'activated' : 'deactivated';
+        return back()->with('success', "Product {$status} successfully!");
+    }
+
+    // ===== ORDER MANAGEMENT =====
+
+    public function orders()
+    {
+        $orders = Order::with(['user', 'items.product'])
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.orders', compact('orders'));
+    }
+
+    public function updateOrderStatus(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'order_status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+            'payment_status' => 'nullable|in:pending,paid,failed',
+        ]);
+
+        $order->update($validated);
+
+        if ($order->order_status === 'delivered' && !$order->delivered_at) {
+            $order->delivered_at = now();
+            $order->save();
+        }
+
+        return back()->with('success', 'Order status updated successfully!');
     }
 }

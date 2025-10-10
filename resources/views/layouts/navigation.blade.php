@@ -37,6 +37,10 @@
                         {{ __('My Requests') }}
                     </x-nav-link>
                     
+                    <x-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.*')">
+                        <i class="fas fa-store mr-1"></i>{{ __('Shop') }}
+                    </x-nav-link>
+                    
                     @if(auth()->user()->isTechnician())
                     <x-nav-link :href="route('requests.assigned')" :active="request()->routeIs('requests.assigned')">
                         {{ __('Assigned to Me') }}
@@ -55,6 +59,25 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
+                    <!-- Cart Icon -->
+                    <a href="{{ route('cart.index') }}" class="relative mr-4 text-gray-600 hover:text-blue-600 transition">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        @php
+                            $cartCount = \App\Models\Cart::where(function($query) {
+                                if (Auth::id()) {
+                                    $query->where('user_id', Auth::id());
+                                } else {
+                                    $query->where('session_id', Session::getId());
+                                }
+                            })->count();
+                        @endphp
+                        @if($cartCount > 0)
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                {{ $cartCount }}
+                            </span>
+                        @endif
+                    </a>
+
                     <!-- User Role Badge -->
                     <span class="px-2 py-1 text-xs font-medium rounded-full {{ Auth::user()->role_badge_color }} mr-3">
                         {{ Auth::user()->role_name }}

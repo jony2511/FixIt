@@ -83,6 +83,22 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * Get cart items for this user
+     */
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    /**
+     * Get orders placed by this user
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     // ===== ROLE HELPER METHODS =====
 
     /**

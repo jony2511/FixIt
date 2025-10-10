@@ -36,6 +36,14 @@ class Category extends Model
         return $this->hasMany(Request::class);
     }
 
+    /**
+     * Get all products in this category
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     // ===== SCOPES =====
 
     /**
