@@ -129,7 +129,7 @@
                                     @if($product->brand)
                                         <p class="text-sm text-gray-600 mb-2">Brand: {{ $product->brand }}</p>
                                     @endif
-                                    <p class="text-2xl font-bold text-blue-600 mb-3">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-2xl font-bold text-blue-600 mb-3">Tk.{{ number_format($product->price, 2) }}</p>
                                     
                                     @if($product->stock_status != 'out_of_stock')
                                         <form action="{{ route('cart.add', $product) }}" method="POST" class="mt-3">

@@ -42,7 +42,7 @@
                                                 {{ $order->items->count() }} item(s)
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                                ${{ number_format($order->total_amount, 2) }}
+                                                Tk.{{ number_format($order->total_amount, 2) }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="inline-block">

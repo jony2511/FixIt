@@ -55,7 +55,7 @@
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                                                ${{ number_format($product->price, 2) }}
+                                                Tk.{{ number_format($product->price, 2) }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">

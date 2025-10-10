@@ -88,7 +88,7 @@
                         </div>
                         <div class="ml-4">
                             <h4 class="text-lg font-semibold text-gray-700">Total Spent</h4>
-                            <p class="text-3xl font-bold text-purple-600">৳{{ number_format($totalSpent, 2) }}</p>
+                            <p class="text-3xl font-bold text-purple-600">Tk.{{ number_format($totalSpent, 2) }}</p>
                         </div>
                     </div>
                     <div class="text-right">
@@ -119,6 +119,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -155,15 +156,30 @@
                                             </span>
                                         @endif
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($order->payment_status === 'paid')
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Paid
+                                            </span>
+                                        @elseif($order->payment_status === 'failed')
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                Failed
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Pending
+                                            </span>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 text-sm text-gray-500">
                                         {{ $order->orderItems->count() }} {{ Str::plural('item', $order->orderItems->count()) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        ৳{{ number_format($order->total_amount, 2) }}
+                                        Tk.{{ number_format($order->total_amount, 2) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                         <a href="{{ route('user.orders.show', $order->id) }}" class="text-blue-600 hover:text-blue-900">View</a>
-                                        @if($order->order_status === 'delivered')
+                                        @if($order->payment_status === 'paid')
                                             <a href="{{ route('user.orders.invoice', $order->id) }}" class="text-green-600 hover:text-green-900">Invoice</a>
                                         @endif
                                     </td>

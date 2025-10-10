@@ -24,7 +24,7 @@
                         </div>
                         <div>
                             <p class="text-gray-600 mb-1">Total Amount</p>
-                            <p class="font-bold text-blue-600">৳{{ number_format($order->total_amount, 2) }}</p>
+                            <p class="font-bold text-blue-600">Tk.{{ number_format($order->total_amount, 2) }}</p>
                         </div>
                     </div>
                     @if($order->transaction_id)

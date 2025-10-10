@@ -26,9 +26,11 @@ class OrderController extends Controller
             return redirect()->route('shop.index')->with('error', 'Your cart is empty!');
         }
 
-        $total = $cartItems->sum('subtotal');
+        $subtotal = $cartItems->sum('subtotal');
+        $shipping = $subtotal > 500 ? 0 : 50; // Free shipping above Tk.500
+        $total = $subtotal + $shipping;
 
-        return view('shop.checkout', compact('cartItems', 'total'));
+        return view('shop.checkout', compact('cartItems', 'total', 'subtotal', 'shipping'));
     }
 
     public function placeOrder(Request $request)
@@ -67,11 +69,18 @@ class OrderController extends Controller
                 }
             }
 
+            // Calculate totals
+            $subtotal = $cartItems->sum('subtotal');
+            $shipping = $subtotal > 500 ? 0 : 50; // Free shipping above Tk.500
+            $totalAmount = $subtotal + $shipping;
+
             // Create order
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
                 'user_id' => Auth::id(),
-                'total_amount' => $cartItems->sum('subtotal'),
+                'subtotal_amount' => $subtotal,
+                'shipping_amount' => $shipping,
+                'total_amount' => $totalAmount,
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
                 'order_status' => 'pending',

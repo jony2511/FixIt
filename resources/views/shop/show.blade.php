@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="mb-6">
-                                <p class="text-4xl font-bold text-blue-600 mb-2">${{ number_format($product->price, 2) }}</p>
+                                <p class="text-4xl font-bold text-blue-600 mb-2">Tk.{{ number_format($product->price, 2) }}</p>
                             </div>
 
                             @if($product->brand)
@@ -119,7 +119,7 @@
                                         @endif
                                         <div class="p-4">
                                             <h3 class="font-semibold text-gray-800 mb-2 truncate">{{ $related->name }}</h3>
-                                            <p class="text-xl font-bold text-blue-600">${{ number_format($related->price, 2) }}</p>
+                                            <p class="text-xl font-bold text-blue-600">Tk.{{ number_format($related->price, 2) }}</p>
                                         </div>
                                     </a>
                                 </div>

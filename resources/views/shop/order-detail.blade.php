@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-gray-800 leading-tight">
                 <i class="fas fa-box mr-2"></i>Order #{{ $order->order_number }}
             </h2>
             <a href="{{ route('orders.index') }}" class="text-blue-600 hover:text-blue-700">
@@ -141,9 +141,9 @@
                                         <div class="mt-2 flex justify-between items-center">
                                             <p class="text-gray-700">
                                                 Qty: <span class="font-semibold">{{ $item->quantity }}</span> × 
-                                                ${{ number_format($item->price, 2) }}
+                                                Tk.{{ number_format($item->price, 2) }}
                                             </p>
-                                            <p class="text-xl font-bold text-blue-600">${{ number_format($item->subtotal, 2) }}</p>
+                                            <p class="text-xl font-bold text-blue-600">Tk.{{ number_format($item->subtotal, 2) }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -195,34 +195,59 @@
                             </div>
                             <div class="flex justify-between text-gray-600">
                                 <span>Subtotal:</span>
-                                <span>${{ number_format($order->total_amount, 2) }}</span>
+                                <span>Tk.{{ number_format($order->subtotal_amount ?? $order->total_amount, 2) }}</span>
                             </div>
                             <div class="flex justify-between text-gray-600">
                                 <span>Shipping:</span>
-                                <span class="text-green-600">FREE</span>
+                                @if(($order->shipping_amount ?? 0) > 0)
+                                    <span>Tk.{{ number_format($order->shipping_amount, 2) }}</span>
+                                @else
+                                    <span class="text-green-600">FREE</span>
+                                @endif
                             </div>
                             <div class="border-t pt-3 flex justify-between text-lg font-bold text-gray-800">
                                 <span>Total:</span>
-                                <span class="text-blue-600">${{ number_format($order->total_amount, 2) }}</span>
+                                <span class="text-blue-600">Tk.{{ number_format($order->total_amount, 2) }}</span>
                             </div>
                         </div>
 
-                        <div class="p-4 bg-gray-50 rounded-lg">
-                            <p class="text-sm text-gray-700 mb-2">
-                                <span class="font-semibold">Payment Method:</span>
-                            </p>
-                            @if($order->payment_method == 'cod')
-                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded text-sm">
-                                    <i class="fas fa-money-bill-wave mr-1"></i>Cash on Delivery
-                                </span>
-                            @else
-                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">
-                                    <i class="fas fa-credit-card mr-1"></i>Online Payment (SSLCommerz)
-                                </span>
-                            @endif
+                        <div class="p-4 bg-gray-50 rounded-lg space-y-3">
+                            <div>
+                                <p class="text-sm text-gray-700 mb-2">
+                                    <span class="font-semibold">Payment Method:</span>
+                                </p>
+                                @if($order->payment_method == 'cod')
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded text-sm">
+                                        <i class="fas fa-money-bill-wave mr-1"></i>Cash on Delivery
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">
+                                        <i class="fas fa-credit-card mr-1"></i>Online Payment (SSLCommerz)
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div>
+                                <p class="text-sm text-gray-700 mb-2">
+                                    <span class="font-semibold">Payment Status:</span>
+                                </p>
+                                @if($order->payment_status === 'paid')
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded text-sm">
+                                        <i class="fas fa-check-circle mr-1"></i>Paid
+                                    </span>
+                                @elseif($order->payment_status === 'failed')
+                                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded text-sm">
+                                        <i class="fas fa-times-circle mr-1"></i>Failed
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">
+                                        <i class="fas fa-clock mr-1"></i>Pending
+                                    </span>
+                                @endif
+                            </div>
 
                             @if($order->transaction_id)
-                                <div class="mt-3 pt-3 border-t border-gray-200">
+                                <div class="pt-3 border-t border-gray-200">
                                     <p class="text-xs text-gray-600 mb-1">Transaction ID:</p>
                                     <p class="text-sm font-mono text-gray-800">{{ $order->transaction_id }}</p>
                                 </div>

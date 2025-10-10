@@ -26,7 +26,7 @@ class UserDashboardController extends Controller
         $pendingOrders = Order::where('user_id', $user->id)->where('order_status', 'pending')->count();
         $processingOrders = Order::where('user_id', $user->id)->where('order_status', 'processing')->count();
         $completedOrders = Order::where('user_id', $user->id)->where('order_status', 'delivered')->count();
-        $totalSpent = Order::where('user_id', $user->id)->where('order_status', 'delivered')->sum('total_amount');
+        $totalSpent = Order::where('user_id', $user->id)->where('payment_status', 'paid')->sum('total_amount');
         
         // Get recent orders
         $recentOrders = Order::where('user_id', $user->id)
@@ -99,9 +99,9 @@ class UserDashboardController extends Controller
             ->with(['orderItems.product', 'user'])
             ->findOrFail($id);
             
-        // Only allow invoice download for delivered orders
-        if ($order->order_status !== 'delivered') {
-            return redirect()->back()->with('error', 'Invoice is only available for delivered orders.');
+        // Only allow invoice download for paid orders
+        if ($order->payment_status !== 'paid') {
+            return redirect()->back()->with('error', 'Invoice is only available for paid orders.');
         }
         
         // Generate PDF
@@ -130,9 +130,9 @@ class UserDashboardController extends Controller
             ->with(['orderItems.product', 'user'])
             ->findOrFail($id);
             
-        // Only allow invoice viewing for delivered orders
-        if ($order->order_status !== 'delivered') {
-            return redirect()->back()->with('error', 'Invoice is only available for delivered orders.');
+        // Only allow invoice viewing for paid orders
+        if ($order->payment_status !== 'paid') {
+            return redirect()->back()->with('error', 'Invoice is only available for paid orders.');
         }
         
         // Generate and stream PDF

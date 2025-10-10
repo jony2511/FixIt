@@ -46,9 +46,11 @@ class PaymentController extends Controller
         }
 
         // Calculate total
-        $totalAmount = $cartItems->sum(function($item) {
+        $subtotal = $cartItems->sum(function($item) {
             return $item->price * $item->quantity;
         });
+        $shipping = $subtotal > 500 ? 0 : 50; // Free shipping above Tk.500
+        $totalAmount = $subtotal + $shipping;
 
         // Create order
         DB::beginTransaction();
@@ -56,6 +58,8 @@ class PaymentController extends Controller
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
                 'user_id' => auth()->id(),
+                'subtotal_amount' => $subtotal,
+                'shipping_amount' => $shipping,
                 'total_amount' => $totalAmount,
                 'payment_method' => 'online',
                 'payment_status' => 'pending',
@@ -232,7 +236,8 @@ class PaymentController extends Controller
             try {
                 // Update order status
                 $order->update([
-                    'order_status' => 'delivered', // Use delivered instead of completed
+                    'order_status' => 'processing', // Set to processing after payment
+                    'payment_status' => 'paid', // Mark payment as paid
                     'payment_details' => json_encode($request->all()),
                 ]);
 
@@ -360,6 +365,7 @@ class PaymentController extends Controller
         if ($order) {
             $order->update([
                 'order_status' => 'cancelled',
+                'payment_status' => 'failed',
                 'payment_details' => json_encode($request->all()),
             ]);
         }
@@ -380,6 +386,7 @@ class PaymentController extends Controller
         if ($order) {
             $order->update([
                 'order_status' => 'cancelled',
+                'payment_status' => 'failed',
                 'payment_details' => json_encode($request->all()),
             ]);
         }

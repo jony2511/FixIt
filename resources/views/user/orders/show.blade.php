@@ -8,7 +8,7 @@
                 <a href="{{ route('user.orders') }}" class="text-blue-600 hover:text-blue-800">
                     ← Back to Orders
                 </a>
-                @if($order->status === 'completed')
+                @if($order->payment_status === 'paid')
                     <a href="{{ route('user.orders.invoice', $order->id) }}" 
                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -28,28 +28,28 @@
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-lg font-semibold text-gray-900">Order Status</h3>
-                    @if($order->status === 'pending')
+                    @if($order->order_status === 'pending')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                             </svg>
                             Pending
                         </span>
-                    @elseif($order->status === 'processing')
+                    @elseif($order->order_status === 'processing')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
                             </svg>
                             Processing
                         </span>
-                    @elseif($order->status === 'completed')
+                    @elseif($order->order_status === 'delivered')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
                             </svg>
                             Completed
                         </span>
-                    @elseif($order->status === 'cancelled')
+                    @elseif($order->order_status === 'cancelled')
                         <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-red-100 text-red-800">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -65,8 +65,8 @@
                         <div class="text-sm text-gray-500">Order Placed</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl font-bold {{ $order->status === 'pending' ? 'text-gray-400' : 'text-blue-600' }}">
-                            @if($order->status === 'pending')
+                        <div class="text-2xl font-bold {{ $order->order_status === 'pending' ? 'text-gray-400' : 'text-blue-600' }}">
+                            @if($order->order_status === 'pending')
                                 --
                             @else
                                 {{ $order->updated_at->format('M d') }}
@@ -75,8 +75,8 @@
                         <div class="text-sm text-gray-500">Processing Started</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl font-bold {{ in_array($order->status, ['pending', 'processing']) ? 'text-gray-400' : 'text-yellow-600' }}">
-                            @if(in_array($order->status, ['pending', 'processing']))
+                        <div class="text-2xl font-bold {{ in_array($order->order_status, ['pending', 'processing']) ? 'text-gray-400' : 'text-yellow-600' }}">
+                            @if(in_array($order->order_status, ['pending', 'processing']))
                                 --
                             @else
                                 {{ $order->updated_at->format('M d') }}
@@ -85,8 +85,8 @@
                         <div class="text-sm text-gray-500">Shipped</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-2xl font-bold {{ $order->status !== 'completed' ? 'text-gray-400' : 'text-green-600' }}">
-                            @if($order->status !== 'completed')
+                        <div class="text-2xl font-bold {{ $order->order_status !== 'delivered' ? 'text-gray-400' : 'text-green-600' }}">
+                            @if($order->order_status !== 'delivered')
                                 --
                             @else
                                 {{ $order->updated_at->format('M d') }}
@@ -125,13 +125,13 @@
                                         <div class="flex items-center mt-1">
                                             <span class="text-sm text-gray-500">Qty: {{ $item->quantity }}</span>
                                             <span class="mx-2 text-gray-300">•</span>
-                                            <span class="text-sm text-gray-500">৳{{ number_format($item->price, 2) }} each</span>
+                                            <span class="text-sm text-gray-500">Tk.{{ number_format($item->price, 2) }} each</span>
                                         </div>
                                     </div>
                                     
                                     <!-- Item Total -->
                                     <div class="flex-shrink-0 text-right">
-                                        <div class="text-sm font-medium text-gray-900">৳{{ number_format($item->price * $item->quantity, 2) }}</div>
+                                        <div class="text-sm font-medium text-gray-900">Tk.{{ number_format($item->price * $item->quantity, 2) }}</div>
                                     </div>
                                 </div>
                                 @endforeach
@@ -159,16 +159,16 @@
                             <div class="space-y-3">
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-600">Subtotal</span>
-                                    <span class="font-medium text-gray-900">৳{{ number_format($subtotal, 2) }}</span>
+                                    <span class="font-medium text-gray-900">Tk.{{ number_format($subtotal, 2) }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-600">Shipping</span>
-                                    <span class="font-medium text-gray-900">৳{{ number_format($shipping, 2) }}</span>
+                                    <span class="font-medium text-gray-900">Tk.{{ number_format($shipping, 2) }}</span>
                                 </div>
                                 <div class="border-t border-gray-200 pt-3">
                                     <div class="flex justify-between">
                                         <span class="text-base font-medium text-gray-900">Total</span>
-                                        <span class="text-lg font-bold text-gray-900">৳{{ number_format($order->total_amount, 2) }}</span>
+                                        <span class="text-lg font-bold text-gray-900">Tk.{{ number_format($order->total_amount, 2) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -204,12 +204,14 @@
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600">Payment Status</span>
                                 <span class="font-medium">
-                                    @if($order->status === 'completed')
+                                    @if($order->payment_status === 'paid')
                                         <span class="text-green-600">✓ Paid</span>
+                                    @elseif($order->payment_status === 'failed')
+                                        <span class="text-red-600">✗ Failed</span>
                                     @elseif($order->payment_method === 'cod')
                                         <span class="text-orange-600">◯ Cash on Delivery</span>
                                     @else
-                                        <span class="text-red-600">◯ Pending</span>
+                                        <span class="text-yellow-600">◯ Pending</span>
                                     @endif
                                 </span>
                             </div>
@@ -259,7 +261,7 @@
                                     </div>
                                 </div>
                                 
-                                @if($order->status !== 'pending')
+                                @if($order->order_status !== 'pending')
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0 w-2 h-2 bg-yellow-600 rounded-full mt-2"></div>
                                     <div>
@@ -269,17 +271,17 @@
                                 </div>
                                 @endif
                                 
-                                @if($order->status === 'completed')
+                                @if($order->order_status === 'delivered')
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0 w-2 h-2 bg-green-600 rounded-full mt-2"></div>
                                     <div>
-                                        <div class="text-sm font-medium text-gray-900">Order Completed</div>
+                                        <div class="text-sm font-medium text-gray-900">Order Delivered</div>
                                         <div class="text-xs text-gray-500">{{ $order->updated_at->format('M d, Y h:i A') }}</div>
                                     </div>
                                 </div>
                                 @endif
                                 
-                                @if($order->status === 'cancelled')
+                                @if($order->order_status === 'cancelled')
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0 w-2 h-2 bg-red-600 rounded-full mt-2"></div>
                                     <div>

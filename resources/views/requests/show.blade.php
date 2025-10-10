@@ -170,7 +170,7 @@
                                 @endif
                                 <div class="flex-grow">
                                     <p class="font-semibold text-gray-800">{{ $product->name }}</p>
-                                    <p class="text-sm text-gray-600">${{ number_format($product->price, 2) }}</p>
+                                    <p class="text-sm text-gray-600">Tk.{{ number_format($product->price, 2) }}</p>
                                     <a href="{{ route('shop.show', $product) }}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700">
                                         View in Shop <i class="fas fa-external-link-alt ml-1"></i>
                                     </a>
@@ -212,7 +212,7 @@
                                         @endif
                                         <div class="flex-grow">
                                             <p class="font-semibold text-sm text-gray-800">{{ $product->name }}</p>
-                                            <p class="text-xs text-gray-600">${{ number_format($product->price, 2) }} • Stock: {{ $product->quantity }}</p>
+                                            <p class="text-xs text-gray-600">Tk.{{ number_format($product->price, 2) }} • Stock: {{ $product->quantity }}</p>
                                         </div>
                                     </label>
                                 @endforeach
@@ -274,7 +274,7 @@
                             @endif
                             <div class="flex-grow">
                                 <h3 class="font-semibold text-gray-800">{{ $product->name }}</h3>
-                                <p class="text-sm text-gray-600 mb-2">${{ number_format($product->price, 2) }}</p>
+                                <p class="text-sm text-gray-600 mb-2">Tk.{{ number_format($product->price, 2) }}</p>
                                 <div class="flex gap-2">
                                     <a href="{{ route('shop.show', $product) }}" class="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
                                         <i class="fas fa-eye mr-1"></i>View
@@ -394,7 +394,7 @@
                                                         <div class="flex-grow">
                                                             <h6 class="font-semibold text-sm text-gray-900">{{ $product->name }}</h6>
                                                             <p class="text-xs text-gray-600 mb-2">
-                                                                <span class="font-bold text-green-600">${{ number_format($product->price, 2) }}</span>
+                                                                <span class="font-bold text-green-600">Tk.{{ number_format($product->price, 2) }}</span>
                                                                 @if($product->brand)
                                                                     • {{ $product->brand }}
                                                                 @endif

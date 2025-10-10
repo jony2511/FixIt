@@ -65,8 +65,8 @@
 
                                             <!-- Price -->
                                             <div class="text-right">
-                                                <p class="text-sm text-gray-500">${{ number_format($item->price, 2) }} each</p>
-                                                <p class="text-lg font-bold text-blue-600">${{ number_format($item->subtotal, 2) }}</p>
+                                                <p class="text-sm text-gray-500">Tk.{{ number_format($item->price, 2) }} each</p>
+                                                <p class="text-lg font-bold text-blue-600">Tk.{{ number_format($item->subtotal, 2) }}</p>
                                             </div>
                                         </div>
 
@@ -98,17 +98,31 @@
                             <h3 class="text-xl font-bold text-gray-800 mb-4">Order Summary</h3>
                             
                             <div class="space-y-3 mb-6">
+                                @php
+                                    $subtotal = $cartItems->sum('subtotal');
+                                    $shipping = $subtotal > 500 ? 0 : 50; // Free shipping above Tk.500
+                                    $grandTotal = $subtotal + $shipping;
+                                @endphp
                                 <div class="flex justify-between text-gray-600">
                                     <span>Items ({{ $cartItems->count() }})</span>
-                                    <span>${{ number_format($total, 2) }}</span>
+                                    <span>Tk.{{ number_format($subtotal, 2) }}</span>
                                 </div>
                                 <div class="flex justify-between text-gray-600">
                                     <span>Shipping</span>
-                                    <span class="text-green-600">FREE</span>
+                                    @if($shipping > 0)
+                                        <span>Tk.{{ number_format($shipping, 2) }}</span>
+                                    @else
+                                        <span class="text-green-600">FREE</span>
+                                    @endif
                                 </div>
+                                @if($subtotal > 0 && $subtotal <= 500)
+                                    <div class="text-xs text-gray-500">
+                                        Add Tk.{{ number_format(500 - $subtotal, 2) }} more for free shipping!
+                                    </div>
+                                @endif
                                 <div class="border-t pt-3 flex justify-between text-lg font-bold text-gray-800">
                                     <span>Total</span>
-                                    <span class="text-blue-600">${{ number_format($total, 2) }}</span>
+                                    <span class="text-blue-600">Tk.{{ number_format($grandTotal, 2) }}</span>
                                 </div>
                             </div>
 

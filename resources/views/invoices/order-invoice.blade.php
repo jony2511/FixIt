@@ -278,8 +278,8 @@
                     @endif
                 </td>
                 <td class="text-center">{{ $item->quantity }}</td>
-                <td class="text-right">৳{{ number_format($item->price, 2) }}</td>
-                <td class="text-right">৳{{ number_format($item->price * $item->quantity, 2) }}</td>
+                <td class="text-right">Tk.{{ number_format($item->price, 2) }}</td>
+                <td class="text-right">Tk.{{ number_format($item->price * $item->quantity, 2) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -288,33 +288,37 @@
     <!-- Total Section -->
     <div class="total-section">
         @php
-            $subtotal = $order->orderItems->sum(function($item) {
+            $subtotal = $order->subtotal_amount ?? $order->orderItems->sum(function($item) {
                 return $item->price * $item->quantity;
             });
-            $shipping = 50; // Fixed shipping cost
+            $shipping = $order->shipping_amount ?? 0;
             $tax = 0; // No tax for now
         @endphp
         
         <div class="total-row">
             <div class="total-label">Subtotal:</div>
-            <div class="total-amount">৳{{ number_format($subtotal, 2) }}</div>
+            <div class="total-amount">Tk.{{ number_format($subtotal, 2) }}</div>
         </div>
         
         <div class="total-row">
             <div class="total-label">Shipping:</div>
-            <div class="total-amount">৳{{ number_format($shipping, 2) }}</div>
+            @if($shipping > 0)
+                <div class="total-amount">Tk.{{ number_format($shipping, 2) }}</div>
+            @else
+                <div class="total-amount" style="color: #16a34a;">FREE</div>
+            @endif
         </div>
         
         @if($tax > 0)
         <div class="total-row">
             <div class="total-label">Tax:</div>
-            <div class="total-amount">৳{{ number_format($tax, 2) }}</div>
+            <div class="total-amount">Tk.{{ number_format($tax, 2) }}</div>
         </div>
         @endif
         
         <div class="total-row grand-total">
             <div class="total-label">Grand Total:</div>
-            <div class="total-amount">৳{{ number_format($order->total_amount, 2) }}</div>
+            <div class="total-amount">Tk.{{ number_format($order->total_amount, 2) }}</div>
         </div>
     </div>
 

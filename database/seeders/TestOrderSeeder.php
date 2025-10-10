@@ -66,7 +66,7 @@ class TestOrderSeeder extends Seeder
         }
 
         $this->command->info("Test order created with ID: {$order->id}");
-        $this->command->info("Order total: ৳{$order->total_amount}");
+        $this->command->info("Order total: Tk.{$order->total_amount}");
         $this->command->info("Transaction ID: {$order->transaction_id}");
         $this->command->info("You can now test PDF invoice generation!");
     }

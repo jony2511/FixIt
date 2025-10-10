@@ -55,7 +55,7 @@
                                                 </span>
                                             @endif
                                         </div>
-                                        <p class="text-2xl font-bold text-blue-600">${{ number_format($order->total_amount, 2) }}</p>
+                                        <p class="text-2xl font-bold text-blue-600">Tk.{{ number_format($order->total_amount, 2) }}</p>
                                     </div>
                                 </div>
 
@@ -75,7 +75,7 @@
                                                 <div class="flex-grow">
                                                     <h4 class="font-semibold text-sm text-gray-800">{{ $item->product->name }}</h4>
                                                     <p class="text-xs text-gray-600">Qty: {{ $item->quantity }}</p>
-                                                    <p class="text-sm font-bold text-blue-600">${{ number_format($item->subtotal, 2) }}</p>
+                                                    <p class="text-sm font-bold text-blue-600">Tk.{{ number_format($item->subtotal, 2) }}</p>
                                                 </div>
                                             </div>
                                         @endforeach

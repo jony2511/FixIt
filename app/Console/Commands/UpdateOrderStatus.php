@@ -53,7 +53,7 @@ class UpdateOrderStatus extends Command
             [
                 ['Order ID', $order->id],
                 ['Status', $order->status],
-                ['Total Amount', '৳' . number_format($order->total_amount, 2)],
+                ['Total Amount', 'Tk.' . number_format($order->total_amount, 2)],
                 ['Payment Method', $order->payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment'],
                 ['Transaction ID', $order->transaction_id ?: 'N/A'],
                 ['Updated At', $order->updated_at->format('Y-m-d H:i:s')],
