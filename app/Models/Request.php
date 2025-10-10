@@ -33,6 +33,8 @@ class Request extends Model
         'is_urgent',
         'is_public',
         'views_count',
+        'suggested_products',
+        'replacement_notes',
     ];
 
     /**
@@ -47,6 +49,7 @@ class Request extends Model
             'estimated_cost' => 'decimal:2',
             'ai_confidence' => 'decimal:2',
             'ai_analysis' => 'array',
+            'suggested_products' => 'array',
             'is_urgent' => 'boolean',
             'is_public' => 'boolean',
         ];

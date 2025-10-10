@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/requests/{request}/start', [RequestController::class, 'start'])->name('requests.start');
     Route::post('/requests/{request}/complete', [RequestController::class, 'complete'])->name('requests.complete');
     Route::post('/requests/{request}/reject', [RequestController::class, 'reject'])->name('requests.reject');
+    Route::post('/requests/{request}/suggest-products', [RequestController::class, 'suggestProducts'])->name('requests.suggest-products');
     
     // Comments
     Route::post('/requests/{request}/comments', [RequestController::class, 'addComment'])->name('requests.comments.store');

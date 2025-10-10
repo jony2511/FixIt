@@ -139,6 +139,168 @@
         @endif
     </div>
 
+    <!-- Product Suggestions Section (for Technicians/Admins) -->
+    @if(auth()->user()->canManageRequests() && $request->status !== 'rejected')
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+                <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-shopping-cart mr-2 text-blue-600"></i>
+                    Suggest Replacement Products
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">Recommend products from the shop for this maintenance request</p>
+            </div>
+            
+            <!-- Suggested Products List -->
+            @if($suggestedProductsList->count() > 0)
+                <div class="p-6 bg-green-50 border-b border-green-100">
+                    <h3 class="font-semibold text-green-800 mb-3 flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Currently Suggested Products
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach($suggestedProductsList as $product)
+                            <div class="flex items-center gap-3 bg-white p-3 rounded-lg border border-green-200">
+                                @if($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                                        class="w-16 h-16 object-cover rounded">
+                                @else
+                                    <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
+                                        <i class="fas fa-image text-gray-400"></i>
+                                    </div>
+                                @endif
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-gray-800">{{ $product->name }}</p>
+                                    <p class="text-sm text-gray-600">${{ number_format($product->price, 2) }}</p>
+                                    <a href="{{ route('shop.show', $product) }}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700">
+                                        View in Shop <i class="fas fa-external-link-alt ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if($request->replacement_notes)
+                        <div class="mt-3 p-3 bg-white rounded-lg border border-green-200">
+                            <p class="text-sm text-gray-700"><strong>Notes:</strong> {{ $request->replacement_notes }}</p>
+                        </div>
+                    @endif
+                </div>
+            @endif
+            
+            <!-- Product Suggestion Form -->
+            <div class="p-6">
+                <form method="POST" action="{{ route('requests.suggest-products', $request) }}">
+                    @csrf
+                    
+                    @if($availableProducts->count() > 0)
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Select Products to Suggest
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                                @foreach($availableProducts as $product)
+                                    <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-blue-50 cursor-pointer transition">
+                                        <input type="checkbox" name="product_ids[]" value="{{ $product->id }}" 
+                                            {{ in_array($product->id, $request->suggested_products ?? []) ? 'checked' : '' }}
+                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                                                class="w-12 h-12 object-cover rounded">
+                                        @else
+                                            <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                                                <i class="fas fa-image text-gray-400 text-sm"></i>
+                                            </div>
+                                        @endif
+                                        <div class="flex-grow">
+                                            <p class="font-semibold text-sm text-gray-800">{{ $product->name }}</p>
+                                            <p class="text-xs text-gray-600">${{ number_format($product->price, 2) }} • Stock: {{ $product->quantity }}</p>
+                                        </div>
+                                    </label>
+                                @endforeach
+                            </div>
+                            @error('product_ids')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="replacement_notes" class="block text-sm font-medium text-gray-700 mb-2">
+                                Replacement Notes (Optional)
+                            </label>
+                            <textarea name="replacement_notes" id="replacement_notes" rows="2"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                placeholder="Add notes about why these products are recommended...">{{ old('replacement_notes', $request->replacement_notes) }}</textarea>
+                            @error('replacement_notes')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                            <i class="fas fa-paper-plane mr-2"></i>{{ $suggestedProductsList->count() > 0 ? 'Update' : 'Suggest' }} Products
+                        </button>
+                    @else
+                        <div class="text-center py-8 text-gray-500">
+                            <i class="fas fa-box-open text-4xl mb-3"></i>
+                            <p>No products available in this category yet.</p>
+                            <p class="text-sm">Products will appear here once they are added to the {{ $request->category->name ?? 'relevant' }} category.</p>
+                        </div>
+                    @endif
+                </form>
+            </div>
+        </div>
+    @endif
+
+    <!-- Display Suggested Products for Regular Users -->
+    @if(!auth()->user()->canManageRequests() && $suggestedProductsList->count() > 0)
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+                <h2 class="text-xl font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-tools mr-2 text-green-600"></i>
+                    Recommended Products for This Request
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">The technician has recommended the following products</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    @foreach($suggestedProductsList as $product)
+                        <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                                    class="w-20 h-20 object-cover rounded">
+                            @else
+                                <div class="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+                                    <i class="fas fa-image text-gray-400"></i>
+                                </div>
+                            @endif
+                            <div class="flex-grow">
+                                <h3 class="font-semibold text-gray-800">{{ $product->name }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">${{ number_format($product->price, 2) }}</p>
+                                <div class="flex gap-2">
+                                    <a href="{{ route('shop.show', $product) }}" class="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                        <i class="fas fa-eye mr-1"></i>View
+                                    </a>
+                                    <form action="{{ route('cart.add', $product) }}" method="POST" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="text-sm px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
+                                            <i class="fas fa-shopping-cart mr-1"></i>Add to Cart
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                
+                @if($request->replacement_notes)
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p class="text-sm text-gray-700"><strong>Technician Notes:</strong> {{ $request->replacement_notes }}</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+
     <!-- Comments Section -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">

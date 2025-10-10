@@ -88,6 +88,26 @@
         </div>
 
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                <i class="fas fa-box mr-2"></i>Products
+            </h3>
+            <p class="text-gray-600 mb-4">Manage shop products and inventory</p>
+            <a href="{{ route('admin.products.index') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                Manage Products
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                <i class="fas fa-shopping-bag mr-2"></i>Orders
+            </h3>
+            <p class="text-gray-600 mb-4">View and manage customer orders</p>
+            <a href="{{ route('admin.orders') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                View Orders
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <h3 class="text-xl font-semibold text-gray-900 mb-4">Reports</h3>
             <p class="text-gray-600 mb-4">View system reports and analytics</p>
             <a href="{{ route('admin.reports') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">

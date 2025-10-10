@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\RequestFile;
+use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -112,15 +113,32 @@ class RequestController extends Controller
         $request->load(['user', 'category', 'assignedTechnician', 'files', 'comments.user']);
 
         // Get available technicians for assignment (admin/technician only)
-        $technicians = [];
+        $technicians = collect([]);
+        $availableProducts = collect([]);
+        $suggestedProductsList = collect([]);
+        
         if (auth()->user()->canManageRequests()) {
             $technicians = User::where('role', 'technician')
                 ->where('is_active', true)
                 ->orderBy('name')
                 ->get();
+                
+            // Get products from the same category for suggestion
+            if ($request->category_id) {
+                $availableProducts = Product::where('category_id', $request->category_id)
+                    ->where('is_active', true)
+                    ->where('quantity', '>', 0)
+                    ->orderBy('name')
+                    ->get();
+            }
+            
+            // Get suggested products if any
+            if ($request->suggested_products && is_array($request->suggested_products)) {
+                $suggestedProductsList = Product::whereIn('id', $request->suggested_products)->get();
+            }
         }
 
-        return view('requests.show', compact('request', 'technicians'));
+        return view('requests.show', compact('request', 'technicians', 'availableProducts', 'suggestedProductsList'));
     }
 
     /**
@@ -308,5 +326,36 @@ class RequestController extends Controller
         return redirect()
             ->route('requests.show', $maintenanceRequest)
             ->with('success', 'Comment added successfully!');
+    }
+
+    // Suggest Products for Replacement
+    public function suggestProducts(Request $httpRequest, MaintenanceRequest $request)
+    {
+        if (!auth()->user()->canManageRequests()) {
+            abort(403, 'Access denied.');
+        }
+
+        $validated = $httpRequest->validate([
+            'product_ids' => 'required|array',
+            'product_ids.*' => 'exists:products,id',
+            'replacement_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $request->update([
+            'suggested_products' => $validated['product_ids'],
+            'replacement_notes' => $validated['replacement_notes'] ?? null,
+        ]);
+
+        // Add comment about suggested products
+        $productCount = count($validated['product_ids']);
+        Comment::create([
+            'request_id' => $request->id,
+            'user_id' => auth()->id(),
+            'content' => "Suggested {$productCount} replacement product(s) for this request. " . ($validated['replacement_notes'] ?? ''),
+            'is_internal' => false,
+            'is_update' => true,
+        ]);
+
+        return back()->with('success', 'Products suggested successfully!');
     }
 }
