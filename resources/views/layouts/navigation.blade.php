@@ -41,6 +41,14 @@
                         <i class="fas fa-store mr-1"></i>{{ __('Shop') }}
                     </x-nav-link>
                     
+                    <x-nav-link :href="route('user.orders')" :active="request()->routeIs('user.orders*')">
+                        <i class="fas fa-shopping-bag mr-1"></i>{{ __('My Orders') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')">
+                        <i class="fas fa-tachometer-alt mr-1"></i>{{ __('My Dashboard') }}
+                    </x-nav-link>
+                    
                     @if(auth()->user()->isTechnician())
                     <x-nav-link :href="route('requests.assigned')" :active="request()->routeIs('requests.assigned')">
                         {{ __('Assigned to Me') }}
@@ -106,7 +114,7 @@
                                 <i class="fas fa-tools mr-2"></i>{{ __('My Requests') }}
                             </x-dropdown-link>
                             
-                            <x-dropdown-link :href="route('orders.index')">
+                            <x-dropdown-link :href="route('user.orders')">
                                 <i class="fas fa-shopping-bag mr-2"></i>{{ __('My Orders') }}
                             </x-dropdown-link>
 

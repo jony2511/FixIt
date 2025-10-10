@@ -42,6 +42,19 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Accessor for status - alias for order_status
+     */
+    public function getStatusAttribute()
+    {
+        return $this->order_status;
+    }
+
     public static function generateOrderNumber()
     {
         $prefix = 'ORD';

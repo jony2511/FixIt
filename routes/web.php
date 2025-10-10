@@ -94,17 +94,35 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::put('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
 });
 
+// ===== USER DASHBOARD ROUTES =====
+Route::middleware('auth')->group(function () {
+    // User Dashboard and Order Management
+    Route::get('/user/dashboard', [\App\Http\Controllers\UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user/orders', [\App\Http\Controllers\UserDashboardController::class, 'orders'])->name('user.orders');
+    Route::get('/user/orders/{order}', [\App\Http\Controllers\UserDashboardController::class, 'showOrder'])->name('user.orders.show');
+    Route::get('/user/orders/{order}/track', [\App\Http\Controllers\UserDashboardController::class, 'trackOrder'])->name('user.orders.track');
+    
+    // PDF Invoice Generation
+    Route::get('/user/orders/{order}/invoice', [\App\Http\Controllers\UserDashboardController::class, 'downloadInvoice'])->name('user.orders.invoice');
+    Route::get('/user/orders/{order}/invoice/view', [\App\Http\Controllers\UserDashboardController::class, 'viewInvoice'])->name('user.orders.invoice.view');
+});
+
 // ===== PAYMENT ROUTES =====
 // Protected payment initiation route
 Route::middleware('auth')->group(function () {
     Route::get('/payment/initiate', [\App\Http\Controllers\PaymentController::class, 'initiatePayment'])->name('payment.initiate');
 });
 
-// Public payment callback routes (SSLCommerz callbacks)
-Route::post('/payment/success', [\App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
-Route::post('/payment/fail', [\App\Http\Controllers\PaymentController::class, 'paymentFail'])->name('payment.fail');
-Route::post('/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'paymentCancel'])->name('payment.cancel');
+// Public payment callback routes (SSLCommerz callbacks) - Handle both GET and POST
+Route::match(['get', 'post'], '/payment/success', [\App\Http\Controllers\PaymentController::class, 'paymentSuccess'])->name('payment.success');
+Route::match(['get', 'post'], '/payment/fail', [\App\Http\Controllers\PaymentController::class, 'paymentFail'])->name('payment.fail');
+Route::match(['get', 'post'], '/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'paymentCancel'])->name('payment.cancel');
 Route::post('/payment/ipn', [\App\Http\Controllers\PaymentController::class, 'paymentIPN'])->name('payment.ipn');
+
+// Test payment callback (for debugging)
+Route::match(['get', 'post'], '/payment/test-success', [\App\Http\Controllers\TestPaymentController::class, 'testSuccess'])->name('payment.test-success');
+
+
 
 // ===== PROFILE ROUTES =====
 Route::middleware('auth')->group(function () {
