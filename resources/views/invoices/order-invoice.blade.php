@@ -232,11 +232,11 @@
         <div class="billing-to">
             <div class="section-title">Bill To</div>
             <div class="customer-info">
-                <strong>{{ $order->user->name }}</strong><br>
+                <strong>{{ $order->shipping_name ?? $order->user->name }}</strong><br>
                 {{ $order->shipping_address }}<br>
                 {{ $order->shipping_city }}, {{ $order->shipping_postal_code }}<br>
                 Email: {{ $order->shipping_email ?? $order->user->email }}<br>
-                Phone: {{ $order->phone }}
+                Phone: {{ $order->shipping_phone }}
             </div>
         </div>
     </div>
@@ -247,12 +247,12 @@
         <p style="margin: 0; font-size: 14px; line-height: 1.8;">
             <strong>Order ID:</strong> #{{ $order->id }}<br>
             <strong>Order Date:</strong> {{ $order->created_at->format('F d, Y h:i A') }}<br>
-            <strong>Status:</strong> 
-            <span class="status-badge status-{{ $order->status }}">{{ ucfirst($order->status) }}</span><br>
             <strong>Payment Method:</strong> {{ $order->payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment' }}
             @if($order->transaction_id)
                 <br><strong>Transaction ID:</strong> {{ $order->transaction_id }}
             @endif
+            <br><strong>Status:</strong> 
+            <span class="status-badge status-{{ $order->order_status }}">{{ ucfirst($order->order_status) }}</span>
         </p>
     </div>
 
@@ -339,9 +339,9 @@
             </div>
         @endif
         <div style="margin-top: 10px; font-size: 12px;">
-            @if($order->status === 'completed')
+            @if($order->payment_status === 'paid')
                 <span style="color: #16a34a;">✓ Payment Confirmed</span>
-            @elseif($order->payment_method === 'cod' && $order->status === 'processing')
+            @elseif($order->payment_method === 'cod' && in_array($order->order_status, ['processing', 'confirmed']))
                 <span style="color: #ea580c;">◯ Payment Pending (COD)</span>
             @else
                 <span style="color: #dc2626;">◯ Payment Pending</span>

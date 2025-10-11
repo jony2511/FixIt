@@ -8,10 +8,19 @@ use App\Http\Controllers\AIChatController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TestSSLCommerzController;
 use Illuminate\Support\Facades\Route;
 
 // ===== PUBLIC ROUTES =====
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Test SSLCommerz credentials
+Route::get('/test-sslcommerz', [TestSSLCommerzController::class, 'testCredentials']);
+
+// Test invoice generation
+Route::get('/test-invoice/{order}', function(\App\Models\Order $order) {
+    return view('invoices.order-invoice', compact('order'));
+})->middleware('auth');
 
 // Shop Routes (Public)
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');

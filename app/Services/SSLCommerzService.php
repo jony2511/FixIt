@@ -18,6 +18,14 @@ class SSLCommerzService
         $this->storePassword = config('services.sslcommerz.store_password');
         $this->apiUrl = config('services.sslcommerz.api_url');
         $this->mode = config('services.sslcommerz.mode');
+        
+        // Debug: Log credentials being used (remove in production)
+        Log::info('SSLCommerz Configuration', [
+            'store_id' => $this->storeId,
+            'store_password' => substr($this->storePassword, 0, 3) . '***', // Partially hidden
+            'api_url' => $this->apiUrl,
+            'mode' => $this->mode
+        ]);
     }
 
     /**
