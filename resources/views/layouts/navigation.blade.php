@@ -37,6 +37,10 @@
                         {{ __('My Requests') }}
                     </x-nav-link>
                     
+                    <x-nav-link :href="route('blogs.index')" :active="request()->routeIs('blogs.*')">
+                        <i class="fas fa-blog mr-1"></i>{{ __('Blog') }}
+                    </x-nav-link>
+                    
                     <x-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.*')">
                         <i class="fas fa-store mr-1"></i>{{ __('Shop') }}
                     </x-nav-link>
@@ -228,6 +232,14 @@
                 <x-responsive-nav-link :href="route('requests.my')" :active="request()->routeIs('requests.my')">
                     {{ __('My Requests') }}
                 </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('blogs.index')" :active="request()->routeIs('blogs.*')">
+                    <i class="fas fa-blog mr-1"></i>{{ __('Blog') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.*')">
+                    <i class="fas fa-store mr-1"></i>{{ __('Shop') }}
+                </x-responsive-nav-link>
             </div>
 
             <!-- Responsive Settings Options -->
@@ -259,6 +271,12 @@
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-link :href="route('home')">
                     {{ __('Home') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('blogs.index')">
+                    <i class="fas fa-blog mr-1"></i>{{ __('Blog') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('shop.index')">
+                    <i class="fas fa-store mr-1"></i>{{ __('Shop') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('login')">
                     {{ __('Login') }}

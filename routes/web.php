@@ -9,6 +9,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestSSLCommerzController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
 // ===== PUBLIC ROUTES =====
@@ -67,6 +68,11 @@ Professional Repair & E-commerce Services
 Route::get('/test-invoice/{order}', function(\App\Models\Order $order) {
     return view('invoices.order-invoice', compact('order'));
 })->middleware('auth');
+
+// Blog Routes (Public - accessible by anyone)
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+Route::post('/blogs/{slug}/comments', [BlogController::class, 'storeComment'])->name('blogs.comments.store');
 
 // Shop Routes (Public)
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
@@ -153,6 +159,10 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     // Order Management
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
     Route::put('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.update-status');
+    
+    // Blog Management
+    Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
+    Route::put('/blogs/{blog}/toggle-published', [\App\Http\Controllers\Admin\BlogController::class, 'togglePublished'])->name('blogs.toggle-published');
 });
 
 // ===== USER DASHBOARD ROUTES =====

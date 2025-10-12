@@ -108,6 +108,16 @@
         </div>
 
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                <i class="fas fa-blog mr-2"></i>Blog Management
+            </h3>
+            <p class="text-gray-600 mb-4">Create and manage blog posts</p>
+            <a href="{{ route('admin.blogs.index') }}" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                Manage Blogs
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <h3 class="text-xl font-semibold text-gray-900 mb-4">Reports</h3>
             <p class="text-gray-600 mb-4">View system reports and analytics</p>
             <a href="{{ route('admin.reports') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
