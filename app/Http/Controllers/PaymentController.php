@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\SSLCommerzService;
+use App\Mail\PaymentConfirmationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -263,6 +265,25 @@ class PaymentController extends Controller
                 session()->forget('recent_payment_transaction_id');
 
                 DB::commit();
+
+                // Send payment confirmation email with invoice
+                try {
+                    $recipientEmail = $order->shipping_email ?? $order->user->email;
+                    Mail::to($recipientEmail)->send(new PaymentConfirmationMail($order));
+                    Log::info('Payment confirmation email sent successfully', [
+                        'order_id' => $order->id,
+                        'order_number' => $order->order_number,
+                        'recipient' => $recipientEmail
+                    ]);
+                } catch (\Exception $emailError) {
+                    // Log error but don't fail the payment process
+                    Log::error('Failed to send payment confirmation email', [
+                        'order_id' => $order->id,
+                        'order_number' => $order->order_number,
+                        'error' => $emailError->getMessage(),
+                        'trace' => $emailError->getTraceAsString()
+                    ]);
+                }
 
                 // Log the user in if they're not already authenticated (for callback context)
                 if (!auth()->check() && $order->user_id) {

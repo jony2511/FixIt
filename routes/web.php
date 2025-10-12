@@ -17,6 +17,52 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Test SSLCommerz credentials
 Route::get('/test-sslcommerz', [TestSSLCommerzController::class, 'testCredentials']);
 
+// Test email system dashboard
+Route::get('/test-email-system', function() {
+    return view('test-email-system');
+});
+
+// Test email configuration API
+Route::get('/test-email-config', function() {
+    try {
+        \Illuminate\Support\Facades\Mail::raw('🎉 Test Email from FixIt
+
+Congratulations! Your email system is configured correctly.
+
+This is a test email to verify that your Gmail SMTP configuration is working properly.
+
+✅ Email Configuration Details:
+- SMTP Host: smtp.gmail.com
+- Port: 587
+- Encryption: TLS
+- From: noreply@fixit.com
+
+Your FixIt application can now send:
+• Payment confirmation emails with PDF invoices
+• Password reset emails
+• Order updates and notifications
+
+If you received this email, everything is working perfectly!
+
+---
+FixIt Solutions
+Professional Repair & E-commerce Services
+', function($message) {
+            $message->to('mdtarifulislamjony@gmail.com')
+                    ->subject('✅ FixIt Email System Test - Success!');
+        });
+        return response()->json([
+            'success' => true,
+            'message' => 'Test email sent successfully! Check your Gmail inbox (mdtarifulislamjony@gmail.com). It may take 1-2 minutes to arrive.'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to send email: ' . $e->getMessage()
+        ]);
+    }
+});
+
 // Test invoice generation
 Route::get('/test-invoice/{order}', function(\App\Models\Order $order) {
     return view('invoices.order-invoice', compact('order'));
