@@ -14,13 +14,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Get recent public requests with user and category info
-        $recentRequests = MaintenanceRequest::with(['user', 'category', 'assignedTechnician'])
-            ->public()
-            ->latest()
-            ->take(10)
-            ->get();
-
         // Get request statistics for homepage
         $stats = [
             'total_requests' => MaintenanceRequest::count(),
@@ -29,7 +22,7 @@ class HomeController extends Controller
             'in_progress_requests' => MaintenanceRequest::inProgress()->count(),
         ];
 
-        return view('home', compact('recentRequests', 'stats'));
+        return view('home', compact('stats'));
     }
 
     /**
