@@ -3,7 +3,7 @@
 @section('title', 'Newsfeed - Dashboard')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
     <div class="flex flex-col lg:flex-row gap-6">
         
         <!-- Left Sidebar - User Stats & Quick Actions -->

@@ -27,6 +27,8 @@ class AdminController extends Controller
                 'total_requests' => MaintenanceRequest::count(),
                 'pending_requests' => MaintenanceRequest::where('status', 'pending')->count(),
                 'completed_requests' => MaintenanceRequest::where('status', 'completed')->count(),
+                'total_contact_messages' => \App\Models\ContactMessage::count(),
+                'unread_contact_messages' => \App\Models\ContactMessage::where('is_read', false)->count(),
             ];
 
             $recentRequests = MaintenanceRequest::with(['user', 'assignedTechnician', 'category'])

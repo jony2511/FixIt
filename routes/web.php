@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TestSSLCommerzController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 // ===== PUBLIC ROUTES =====
@@ -73,6 +74,9 @@ Route::get('/test-invoice/{order}', function(\App\Models\Order $order) {
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
 Route::post('/blogs/{slug}/comments', [BlogController::class, 'storeComment'])->name('blogs.comments.store');
+
+// Contact Routes (Public)
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 
 // Shop Routes (Public)
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
@@ -163,6 +167,12 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     // Blog Management
     Route::resource('blogs', \App\Http\Controllers\Admin\BlogController::class);
     Route::put('/blogs/{blog}/toggle-published', [\App\Http\Controllers\Admin\BlogController::class, 'togglePublished'])->name('blogs.toggle-published');
+    
+    // Contact Management
+    Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact.index');
+    Route::get('/contact/{contact}', [\App\Http\Controllers\ContactController::class, 'show'])->name('contact.show');
+    Route::delete('/contact/{contact}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contact.destroy');
+    Route::post('/contact/{contact}/toggle-read', [\App\Http\Controllers\ContactController::class, 'toggleRead'])->name('contact.toggle-read');
 });
 
 // ===== USER DASHBOARD ROUTES =====

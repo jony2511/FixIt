@@ -11,7 +11,7 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <div class="flex items-center">
                 <div class="p-3 rounded-full bg-blue-100">
@@ -67,6 +67,23 @@
                 </div>
             </div>
         </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-indigo-100">
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-bold text-gray-900">{{ $stats['total_contact_messages'] }}</h3>
+                    <p class="text-gray-600">Contact Messages</p>
+                    @if($stats['unread_contact_messages'] > 0)
+                        <p class="text-xs text-red-600 font-medium">{{ $stats['unread_contact_messages'] }} unread</p>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Quick Actions -->
@@ -114,6 +131,16 @@
             <p class="text-gray-600 mb-4">Create and manage blog posts</p>
             <a href="{{ route('admin.blogs.index') }}" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
                 Manage Blogs
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                <i class="fas fa-envelope mr-2"></i>Contact Messages
+            </h3>
+            <p class="text-gray-600 mb-4">View and manage customer contact messages</p>
+            <a href="{{ route('admin.contact.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                View Messages
             </a>
         </div>
 

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'FixIT') }} - @yield('title', 'Maintenance Request Platform')</title>
+        <title>{{ config('app.name', 'FixIT') }} - @yield('title', 'Repair and E-commerce Services')</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -131,16 +131,16 @@
                 {{ $slot ?? '' }}
             </main>
 
-            <!-- Modern Footer -->
-            <footer class="bg-gradient-to-br from-slate-50 via-gray-100 to-slate-100 mt-16 border-t border-gray-200">
+            <!-- Modern Footer -->  
+            <footer class="mt-16" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                         <!-- Company Info -->
                         <div class="space-y-6">
-                            <h3 class="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            <h3 class="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-300 to-purple-400 bg-clip-text text-transparent">
                                 FixIT
                             </h3>
-                            <p class="text-gray-600 text-sm leading-relaxed">
+                            <p class="text-blue-100 text-sm leading-relaxed">
                                 Your trusted partner for maintenance and repair services. Fast, reliable, and professional solutions for all your needs.
                             </p>
                             <div class="flex space-x-3">
@@ -161,31 +161,31 @@
 
                         <!-- Quick Links -->
                         <div>
-                            <h4 class="text-lg font-bold mb-6 text-gray-800">Quick Links</h4>
+                            <h4 class="text-lg font-bold mb-6 text-blue-100">Quick Links</h4>
                             <ul class="space-y-3">
                                 <li>
-                                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-home w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Home
+                                    <a href="{{ route('home') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-home w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Home
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-tachometer-alt w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Dashboard
+                                    <a href="{{ route('dashboard') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-tachometer-alt w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Dashboard
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('requests.create') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-plus-circle w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> New Request
+                                    <a href="{{ route('requests.create') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-plus-circle w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> New Request
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('blogs.index') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-blog w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Blog
+                                    <a href="{{ route('blogs.index') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-blog w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Blog
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('shop.index') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-shopping-bag w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Shop
+                                    <a href="{{ route('shop.index') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-shopping-bag w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Shop
                                     </a>
                                 </li>
                             </ul>
@@ -193,35 +193,35 @@
 
                         <!-- Services -->
                         <div>
-                            <h4 class="text-lg font-bold mb-6 text-gray-800">Services</h4>
+                            <h4 class="text-lg font-bold mb-6 text-blue-100">Services</h4>
                             <ul class="space-y-3">
                                 <li>
-                                    <a href="{{ route('requests.my') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-list-alt w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> My Requests
+                                    <a href="{{ route('requests.my') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-list-alt w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> My Requests
                                     </a>
                                 </li>
                                 @if(auth()->check() && auth()->user()->isTechnician())
                                 <li>
-                                    <a href="{{ route('requests.assigned') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-tasks w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Assigned Tasks
+                                    <a href="{{ route('requests.assigned') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-tasks w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Assigned Tasks
                                     </a>
                                 </li>
                                 @endif
                                 @if(auth()->check() && auth()->user()->isAdmin())
                                 <li>
-                                    <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-user-shield w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Admin Panel
+                                    <a href="{{ route('admin.dashboard') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-user-shield w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Admin Panel
                                     </a>
                                 </li>
                                 @endif
                                 <li>
-                                    <a href="{{ route('cart.index') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-shopping-cart w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Cart
+                                    <a href="{{ route('cart.index') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-shopping-cart w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Cart
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('profile.edit') }}" class="text-gray-600 hover:text-blue-600 hover:pl-2 transition-all duration-300 flex items-center group">
-                                        <i class="fas fa-user-cog w-4 mr-3 text-gray-400 group-hover:text-blue-600"></i> Profile Settings
+                                    <a href="{{ route('profile.edit') }}" class="text-blue-200 hover:text-cyan-300 hover:pl-2 transition-all duration-300 flex items-center group">
+                                        <i class="fas fa-user-cog w-4 mr-3 text-blue-300 group-hover:text-cyan-300"></i> Profile Settings
                                     </a>
                                 </li>
                             </ul>
@@ -229,46 +229,46 @@
 
                         <!-- Contact Info -->
                         <div>
-                            <h4 class="text-lg font-bold mb-6 text-gray-800">Get In Touch</h4>
+                            <h4 class="text-lg font-bold mb-6 text-blue-100">Get In Touch</h4>
                             <ul class="space-y-4">
                                 <li class="flex items-start">
                                     <div class="flex-shrink-0 w-5 h-5 mt-0.5">
-                                        <i class="fas fa-map-marker-alt text-gray-400"></i>
+                                        <i class="fas fa-map-marker-alt text-blue-300"></i>
                                     </div>
-                                    <span class="text-sm text-gray-600 ml-3 leading-relaxed">123 Maintenance Street<br>Repair City, RC 12345</span>
+                                    <span class="text-sm text-blue-200 ml-3 leading-relaxed">123 Maintenance Street<br>Repair City, RC 12345</span>
                                 </li>
                                 <li class="flex items-center">
                                     <div class="flex-shrink-0 w-5 h-5">
-                                        <i class="fas fa-phone-alt text-green-500"></i>
+                                        <i class="fas fa-phone-alt text-green-400"></i>
                                     </div>
-                                    <a href="tel:+1234567890" class="text-sm text-gray-600 hover:text-green-600 transition ml-3">+1 (234) 567-890</a>
+                                    <a href="tel:+1234567890" class="text-sm text-blue-200 hover:text-green-300 transition ml-3">+1 (234) 567-890</a>
                                 </li>
                                 <li class="flex items-center">
                                     <div class="flex-shrink-0 w-5 h-5">
-                                        <i class="fas fa-envelope text-purple-500"></i>
+                                        <i class="fas fa-envelope text-purple-400"></i>
                                     </div>
-                                    <a href="mailto:support@fixit.com" class="text-sm text-gray-600 hover:text-purple-600 transition ml-3">support@fixit.com</a>
+                                    <a href="mailto:support@fixit.com" class="text-sm text-blue-200 hover:text-purple-300 transition ml-3">support@fixit.com</a>
                                 </li>
                                 <li class="flex items-center">
                                     <div class="flex-shrink-0 w-5 h-5">
-                                        <i class="fas fa-clock text-yellow-500"></i>
+                                        <i class="fas fa-clock text-yellow-400"></i>
                                     </div>
-                                    <span class="text-sm text-gray-600 ml-3">24/7 Support Available</span>
+                                    <span class="text-sm text-blue-200 ml-3">24/7 Support Available</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Bottom Bar -->
-                    <div class="border-t border-gray-300 pt-8">
+                    <div class="border-t border-blue-400/30 pt-8">
                         <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                            <div class="text-gray-600 text-sm">
-                                © {{ date('Y') }} <span class="text-gray-800 font-bold">FixIT</span>. All rights reserved.
+                            <div class="text-blue-200 text-sm">
+                                © {{ date('Y') }} <span class="text-blue-100 font-bold">FixIT</span>. All rights reserved.
                             </div>
                             <div class="flex space-x-6 text-sm">
-                                <a href="#" class="text-gray-600 hover:text-blue-600 transition duration-300">Privacy Policy</a>
-                                <a href="#" class="text-gray-600 hover:text-blue-600 transition duration-300">Terms of Service</a>
-                                <a href="#" class="text-gray-600 hover:text-blue-600 transition duration-300">Cookie Policy</a>
+                                <a href="#" class="text-blue-200 hover:text-cyan-300 transition duration-300">Privacy Policy</a>
+                                <a href="#" class="text-blue-200 hover:text-cyan-300 transition duration-300">Terms of Service</a>
+                                <a href="#" class="text-blue-200 hover:text-cyan-300 transition duration-300">Cookie Policy</a>
                             </div>
                         </div>
                     </div>

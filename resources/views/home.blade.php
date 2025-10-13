@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Welcome to FixIT - Professional Maintenance Solutions')
+@section('title', 'Welcome to FixIT - Repair and E-Commeerce Services')
 
 @section('content')
 <!-- Hero Section with Animation -->
@@ -396,51 +396,502 @@
                 </div>
             </div>
         </div>
+
+        <!-- Key Features Section Inside Services -->
+        <div class="mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-black gradient-text mb-4">Platform Features</h3>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Experience the power of our modern maintenance management platform</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Easy Request Submission -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <div class="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m-6 4h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 text-center">Easy Request Submission</h4>
+                    <p class="text-gray-600 text-center leading-relaxed">Submit maintenance requests with just a few clicks. Add photos, descriptions, and priority levels.</p>
+                    
+                    <!-- Feature List -->
+                    <div class="mt-6 space-y-2">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                            Photo & File Upload
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                            Priority Level Selection
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                            Instant Confirmation
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Tracking -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <div class="bg-green-50 w-20 h-20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 text-center">Real-time Tracking</h4>
+                    <p class="text-gray-600 text-center leading-relaxed">Track the progress of your requests in real-time. Get notifications when status changes.</p>
+                    
+                    <!-- Feature List -->
+                    <div class="mt-6 space-y-2">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                            Live Status Updates
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                            Push Notifications
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                            Progress Timeline
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI-Powered Categorization -->
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    <div class="flex justify-center mb-6">
+                        <div class="bg-purple-50 w-20 h-20 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3 text-center">AI-Powered Categorization</h4>
+                    <p class="text-gray-600 text-center leading-relaxed">Our AI automatically categorizes your requests for faster assignment to the right technicians.</p>
+                    
+                    <!-- Feature List -->
+                    <div class="mt-6 space-y-2">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                            Smart Classification
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                            Auto-Assignment
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                            Faster Resolution
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-    <!-- Key Features Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-        <!-- Easy Request Submission -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-lg transition duration-300">
-            <div class="flex justify-center mb-6">
-                <div class="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center">
-                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m-6 4h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                </div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Easy Request Submission</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Submit maintenance requests with just a few clicks. Add photos, descriptions, and priority levels.</p>
-        </div>
+  
 
-        <!-- Real-time Tracking -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-lg transition duration-300">
-            <div class="flex justify-center mb-6">
-                <div class="bg-green-50 w-20 h-20 rounded-full flex items-center justify-center">
-                    <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Real-time Tracking</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Track the progress of your requests in real-time. Get notifications when status changes.</p>
-        </div>
+</div>
 
-        <!-- AI-Powered Categorization -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 hover:shadow-lg transition duration-300">
-            <div class="flex justify-center mb-6">
-                <div class="bg-purple-50 w-20 h-20 rounded-full flex items-center justify-center">
-                    <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">AI-Powered Categorization</h3>
-            <p class="text-gray-600 text-center leading-relaxed">Our AI automatically categorizes your requests for faster assignment to the right technicians.</p>
-        </div>
+<!-- About Us Section -->
+<div class="relative py-24 bg-gray-900 overflow-hidden" style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 30%, #1a202c 70%, #000000 100%);">
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-10 left-10 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
     </div>
 
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16 relative z-20">
+            <div class="inline-flex items-center px-6 py-3 bg-white/25 backdrop-blur-sm rounded-full text-white border border-white/40 text-sm font-semibold mb-6 shadow-2xl">
+                <i class="fas fa-info-circle mr-2 text-cyan-300"></i>
+                About FixIT Solutions
+            </div>
+            <h2 class="text-5xl lg:text-6xl font-black mb-6" style="color: #ffffff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
+                We're <span style="background: linear-gradient(135deg, #00d4ff 0%, #5b21b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">revolutionizing</span>
+                <br>maintenance services
+            </h2>
+            <p class="text-xl max-w-3xl mx-auto leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">
+                Founded with a vision to transform how businesses handle maintenance, we combine cutting-edge technology 
+                with expert craftsmanship to deliver unparalleled service experiences.
+            </p>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+            <!-- Left Content -->
+            <div class="space-y-8 relative z-20">
+                <div class="space-y-6">
+                    <h3 class="text-3xl font-bold" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Our Story</h3>
+                    <p class="text-lg leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                        Since our inception, FixIT has been at the forefront of maintenance innovation. What started as a small team 
+                        of passionate technicians has evolved into a comprehensive solution that serves thousands of clients worldwide.
+                    </p>
+                    <p class="text-lg leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                        We believe that maintenance shouldn't be a hassle. That's why we've built an intelligent platform that 
+                        streamlines every aspect of the service process, from initial request to final completion.
+                    </p>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div class="text-3xl font-black mb-2" style="color: #00d4ff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">500+</div>
+                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Expert Technicians</div>
+                    </div>
+                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div class="text-3xl font-black mb-2" style="color: #a855f7; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">10K+</div>
+                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Happy Clients</div>
+                    </div>
+                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div class="text-3xl font-black mb-2" style="color: #ec4899; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">99.9%</div>
+                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Uptime Guarantee</div>
+                    </div>
+                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                        <div class="text-3xl font-black mb-2" style="color: #fbbf24; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">24/7</div>
+                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Support Available</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Illustration -->
+            <div class="relative z-20">
+                <!-- Main Card -->
+                <div class="relative rounded-3xl p-8 shadow-2xl" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4);">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-cog text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">FixIT Dashboard</div>
+                                <div class="text-sm" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Real-time Operations</div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Feed -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center shadow-lg">
+                                <i class="fas fa-check text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">HVAC Maintenance Completed</div>
+                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Building A - Floor 3</div>
+                            </div>
+                            <div class="text-green-400 text-xs font-semibold">2 min ago</div>
+                        </div>
+
+                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg">
+                                <i class="fas fa-wrench text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Plumbing Repair In Progress</div>
+                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Kitchen Area - Leak Detection</div>
+                            </div>
+                            <div class="text-blue-400 text-xs font-semibold">15 min ago</div>
+                        </div>
+
+                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
+                            <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center shadow-lg">
+                                <i class="fas fa-bolt text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Electrical Inspection Scheduled</div>
+                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Main Panel - Safety Check</div>
+                            </div>
+                            <div class="text-purple-400 text-xs font-semibold">1 hour ago</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="mt-6 p-4 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Today's Progress</span>
+                            <span class="text-cyan-400 text-sm font-bold">87%</span>
+                        </div>
+                        <div class="w-full rounded-full h-2" style="background: rgba(255, 255, 255, 0.3);">
+                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 h-2 rounded-full animate-pulse shadow-lg" style="width: 87%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Elements -->
+                <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-xl animate-float">
+                    <i class="fas fa-chart-line text-white text-xl"></i>
+                </div>
+
+                <div class="absolute -bottom-4 -left-4 w-14 h-14 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center shadow-xl animate-float" style="animation-delay: 1s;">
+                    <i class="fas fa-users text-white"></i>
+                </div>
+
+                <div class="absolute top-1/2 -left-8 w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center shadow-xl animate-float" style="animation-delay: 0.5s;">
+                    <i class="fas fa-shield-alt text-white text-sm"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Values Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Innovation -->
+            <div class="group text-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-lightbulb text-3xl text-white"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Innovation</h4>
+                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                    We continuously invest in cutting-edge technology and AI-powered solutions to stay ahead of industry trends 
+                    and deliver superior service experiences.
+                </p>
+            </div>
+
+            <!-- Reliability -->
+            <div class="group text-center relative z-20">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-shield-check text-3xl text-white"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Reliability</h4>
+                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                    Our commitment to excellence means you can count on us for consistent, high-quality service delivery, 
+                    backed by our industry-leading uptime guarantee.
+                </p>
+            </div>
+
+            <!-- Excellence -->
+            <div class="group text-center relative z-20">
+                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-star text-3xl text-white"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Excellence</h4>
+                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                    We maintain the highest standards in every aspect of our service, from initial consultation to project completion, 
+                    ensuring exceptional results every time.
+                </p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-16">
+            <div class="inline-flex flex-col sm:flex-row gap-4">
+                @guest
+                    <a href="{{ route('register') }}" 
+                       class="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl font-bold text-lg text-white overflow-hidden transition-all duration-300 transform hover:scale-105">
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-rocket mr-3"></i>
+                            Join Our Platform
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </a>
+                    
+                    <a href="#services" 
+                       class="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl font-bold text-lg text-white hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-eye mr-3"></i>
+                        Explore Services
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}" 
+                       class="inline-block px-8 py-4 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl font-bold text-lg text-white transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        Access Dashboard
+                    </a>
+                @endguest
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Us Section -->
+<div class="relative py-24 overflow-hidden" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full">
+            <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="contact-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1" fill="currentColor" opacity="0.3"/>
+                        <circle cx="12" cy="12" r="1" fill="currentColor" opacity="0.3"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#contact-pattern)" />
+            </svg>
+        </div>
+    </div>
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-20 right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 left-20 w-48 h-48 bg-white/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            
+            <!-- Left Side - Contact Information -->
+            <div class="text-white space-y-8">
+                <div class="space-y-6">
+                    <h2 class="text-4xl lg:text-5xl font-black leading-tight">
+                        CONTACT US
+                    </h2>
+                    <p class="text-xl text-blue-100 leading-relaxed">
+                        We're here to help you!
+                    </p>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="space-y-6">
+                    <!-- Phone -->
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                            <i class="fas fa-phone text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">Phone</h4>
+                            <p class="text-blue-200">+123-456-7890</p>
+                        </div>
+                    </div>
+
+                    <!-- Website -->
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                            <i class="fas fa-globe text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">Website</h4>
+                            <p class="text-blue-200">www.fixit.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                            <i class="fas fa-envelope text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">E-Mail</h4>
+                            <p class="text-blue-200">hello@fixit.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                            <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">Address</h4>
+                            <p class="text-blue-200">123 Anywhere St., Any City</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="mt-12 space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-blue-300 rounded-full"></div>
+                        <span class="text-blue-100">Quick Response Time</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-blue-300 rounded-full"></div>
+                        <span class="text-blue-100">24/7 Support Available</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 bg-blue-300 rounded-full"></div>
+                        <span class="text-blue-100">Professional Service</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Contact Form -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-2xl">
+                <form id="contactForm" class="space-y-6">
+                    @csrf
+                    <!-- Full Name -->
+                    <div>
+                        <label for="full_name" class="block text-sm font-semibold text-white mb-2">Full Name :</label>
+                        <input type="text" 
+                               id="full_name" 
+                               name="full_name" 
+                               required
+                               class="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent backdrop-blur-sm transition-all duration-300"
+                               placeholder="Enter your full name">
+                        <span class="error-message text-red-300 text-sm hidden"></span>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-semibold text-white mb-2">E-Mail :</label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               required
+                               class="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent backdrop-blur-sm transition-all duration-300"
+                               placeholder="Enter your email address">
+                        <span class="error-message text-red-300 text-sm hidden"></span>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="phone" class="block text-sm font-semibold text-white mb-2">Phone Number :</label>
+                        <input type="tel" 
+                               id="phone" 
+                               name="phone" 
+                               class="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent backdrop-blur-sm transition-all duration-300"
+                               placeholder="Enter your phone number (optional)">
+                        <span class="error-message text-red-300 text-sm hidden"></span>
+                    </div>
+
+                    <!-- Message -->
+                    <div>
+                        <label for="message" class="block text-sm font-semibold text-white mb-2">Message :</label>
+                        <textarea id="message" 
+                                  name="message" 
+                                  rows="5" 
+                                  required
+                                  class="w-full px-4 py-3 bg-white/10 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent backdrop-blur-sm transition-all duration-300 resize-none"
+                                  placeholder="Enter your message here..."></textarea>
+                        <span class="error-message text-red-300 text-sm hidden"></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            id="submitBtn"
+                            class="w-full bg-white text-blue-700 font-bold py-4 px-8 rounded-xl hover:bg-blue-50 focus:outline-none focus:ring-4 focus:ring-white/30 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <span class="submit-text">Send Messages</span>
+                        <div class="loading-spinner hidden inline-block ml-2">
+                            <div class="animate-spin rounded-full h-4 w-4 border-2 border-blue-700 border-t-transparent"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <!-- Success/Error Messages -->
+                <div id="alertMessage" class="mt-4 hidden">
+                    <div class="p-4 rounded-xl backdrop-blur-sm border">
+                        <p class="font-medium"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Enhanced JavaScript for Animations -->
@@ -654,6 +1105,143 @@ function preloadAnimations() {
 }
 
 preloadAnimations();
+
+// Contact Form Handling
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = submitBtn.querySelector('.submit-text');
+    const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+    const alertMessage = document.getElementById('alertMessage');
+    
+    // Clear previous errors
+    document.querySelectorAll('.error-message').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+    });
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitText.textContent = 'Sending...';
+    loadingSpinner.classList.remove('hidden');
+    alertMessage.classList.add('hidden');
+    
+    // Collect form data
+    const formData = new FormData();
+    formData.append('full_name', document.getElementById('full_name').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('phone', document.getElementById('phone').value);
+    formData.append('message', document.getElementById('message').value);
+    formData.append('_token', document.querySelector('input[name="_token"]').value);
+    
+    try {
+        const response = await fetch('/contact', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Success message
+            alertMessage.className = 'mt-4 block';
+            alertMessage.innerHTML = `
+                <div class="p-4 rounded-xl backdrop-blur-sm border border-green-300/30 bg-green-500/20">
+                    <p class="font-medium text-green-100"><i class="fas fa-check-circle mr-2"></i>${result.message}</p>
+                </div>
+            `;
+            
+            // Reset form
+            document.getElementById('contactForm').reset();
+            
+        } else {
+            // Handle validation errors
+            if (result.errors) {
+                Object.keys(result.errors).forEach(field => {
+                    const errorElement = document.querySelector(`input[name="${field}"], textarea[name="${field}"]`).nextElementSibling;
+                    errorElement.textContent = result.errors[field][0];
+                    errorElement.classList.remove('hidden');
+                });
+            }
+            
+            // Show error message
+            alertMessage.className = 'mt-4 block';
+            alertMessage.innerHTML = `
+                <div class="p-4 rounded-xl backdrop-blur-sm border border-red-300/30 bg-red-500/20">
+                    <p class="font-medium text-red-100"><i class="fas fa-exclamation-triangle mr-2"></i>${result.message || 'Please fix the errors above.'}</p>
+                </div>
+            `;
+        }
+        
+    } catch (error) {
+        console.error('Contact form error:', error);
+        
+        // Show error message
+        alertMessage.className = 'mt-4 block';
+        alertMessage.innerHTML = `
+            <div class="p-4 rounded-xl backdrop-blur-sm border border-red-300/30 bg-red-500/20">
+                <p class="font-medium text-red-100"><i class="fas fa-exclamation-triangle mr-2"></i>Something went wrong. Please try again later.</p>
+            </div>
+        `;
+    } finally {
+        // Reset button state
+        submitBtn.disabled = false;
+        submitText.textContent = 'Send Messages';
+        loadingSpinner.classList.add('hidden');
+        
+        // Auto-hide success/error message after 5 seconds
+        setTimeout(() => {
+            alertMessage.classList.add('hidden');
+        }, 5000);
+    }
+});
+
+// Form field animations
+document.querySelectorAll('#contactForm input, #contactForm textarea').forEach(field => {
+    field.addEventListener('focus', function() {
+        this.parentElement.classList.add('field-focused');
+        this.style.transform = 'scale(1.02)';
+        this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.15)';
+    });
+    
+    field.addEventListener('blur', function() {
+        this.parentElement.classList.remove('field-focused');
+        this.style.transform = 'scale(1)';
+        this.style.boxShadow = 'none';
+    });
+    
+    // Add smooth transitions
+    field.style.transition = 'all 0.3s ease';
+});
+
+// Add floating label effect
+document.querySelectorAll('#contactForm input, #contactForm textarea').forEach(field => {
+    const label = field.previousElementSibling;
+    
+    field.addEventListener('focus', function() {
+        if (label && label.tagName === 'LABEL') {
+            label.style.transform = 'translateY(-8px) scale(0.9)';
+            label.style.color = '#ffffff';
+        }
+    });
+    
+    field.addEventListener('blur', function() {
+        if (label && label.tagName === 'LABEL' && !this.value) {
+            label.style.transform = 'translateY(0) scale(1)';
+            label.style.color = '#cbd5e1';
+        }
+    });
+    
+    // Set initial state for fields with values
+    if (field.value && label && label.tagName === 'LABEL') {
+        label.style.transform = 'translateY(-8px) scale(0.9)';
+        label.style.color = '#ffffff';
+    }
+});
 </script>
 
 @endsection
