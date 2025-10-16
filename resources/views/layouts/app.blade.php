@@ -132,7 +132,7 @@
             </main>
 
             <!-- Modern Footer -->  
-            <footer class="mt-16" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
+            <footer class="mt-16" style="padding:50px ;background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                         <!-- Company Info -->

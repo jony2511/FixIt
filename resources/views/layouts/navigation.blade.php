@@ -1,23 +1,25 @@
-<nav x-data="{ open: false }" class="glass-effect backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
+<nav x-data="{ open: false }" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 glass-effect backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20">
             <div class="flex">
                 <!-- Enhanced Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
                         <div class="relative">
-                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-14 h-14 ">
+                                <!-- <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
+                                </svg> -->
+                             <img src="{{ asset('images/image1.png') }}" alt="FixIt Solutions" width="80" height="80" class="object-contain">
+
                             </div>
                             <div class="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl blur-lg opacity-30 -z-10 group-hover:opacity-50 transition-opacity duration-300"></div>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-2xl font-bold gradient-text">FixIT</span>
-                            <span class="text-xs text-gray-500 -mt-1">Maintenance Pro</span>
+                            <span class="text-2xl font-bold gradient-text">FixIt</span>
+                            <span class="text-xs text-gray-500 -mt-1">Repair &<br> E-Commerce Services</span>
                         </div>
                     </a>
                 </div>
