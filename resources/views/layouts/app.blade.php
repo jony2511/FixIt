@@ -15,6 +15,9 @@
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
+        <!-- Alpine.js -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
@@ -276,9 +279,9 @@
 
                 <!-- Scroll to Top Button -->
                 <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
-                        class="fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white w-14 h-14 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:rotate-12 transition-all duration-300 flex items-center justify-center z-50"
+                        class="fixed bottom-8 left-8 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white w-14 h-14 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:rotate-12 transition-all duration-300 flex items-center justify-center"
                         id="scrollToTop"
-                        style="display: none;">
+                        style="display: none; z-index: 40;">
                     <i class="fas fa-arrow-up text-lg"></i>
                 </button>
             </footer>
