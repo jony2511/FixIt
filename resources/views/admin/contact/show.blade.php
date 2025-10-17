@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'View Contact Message - Admin Panel')
+@section('page-title', 'Contact Message Details')
+@section('page-description', 'View and manage customer inquiry')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto">
     <div class="max-w-4xl mx-auto">
         <!-- Back Button -->
         <div class="mb-6">

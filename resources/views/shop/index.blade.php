@@ -1,12 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('FixIt Shop') }}
-        </h2>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'FixIt Shop')
+@section('page-title', 'FixIt Shop')
+@section('page-description', 'Browse and purchase quality products')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
             <!-- Search and Filters -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -166,4 +166,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+@endsection

@@ -1,6 +1,12 @@
-<x-app-layout>
-    <div class="py-12 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+@extends('layouts.sidebar')
+
+@section('title', $blog->title)
+@section('page-title', 'Blog Post')
+@section('page-description', 'Read the full article')
+
+@section('content')
+    <div class="bg-gray-50">
+        <div class="max-w-4xl mx-auto">
             
             <!-- Back Button -->
             <div class="mb-6">
@@ -335,4 +341,4 @@
             document.getElementById('reply-form-' + commentId).classList.add('hidden');
         }
     </script>
-</x-app-layout>
+@endsection

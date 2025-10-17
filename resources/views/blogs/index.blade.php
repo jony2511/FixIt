@@ -1,13 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-3xl text-gray-800 leading-tight">
-            {{ __('Blog') }}
-        </h2>
-        <p class="mt-2 text-gray-600">Maxly bring the power of data science and artificial intelligence to every business.</p>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12 bg-gray-50">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'Blog')
+@section('page-title', 'Blog')
+@section('page-description', 'Maxly bring the power of data science and artificial intelligence to every business.')
+
+@section('content')
+    <div class="bg-gray-50">
+        <div class="max-w-7xl mx-auto">
             
             <!-- Search and Filter Section -->
             <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
@@ -153,4 +152,4 @@
 
         </div>
     </div>
-</x-app-layout>
+@endsection

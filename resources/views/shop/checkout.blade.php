@@ -1,12 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <i class="fas fa-credit-card mr-2"></i>{{ __('Checkout') }}
-        </h2>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'Checkout')
+@section('page-title', 'Checkout')
+@section('page-description', 'Complete your purchase')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
             <form action="{{ route('orders.place') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -224,4 +224,4 @@
             </form>
         </div>
     </div>
-</x-app-layout>
+@endsection

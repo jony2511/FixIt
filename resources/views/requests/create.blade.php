@@ -1,10 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Submit New Request')
+@section('page-title', 'Submit New Request')
+@section('page-description', 'Describe your maintenance issue and we\'ll get it resolved quickly')
 
 @section('content')
-<div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">
+<div class="max-w-4xl mx-auto">
         
         <!-- Header Section with Modern Design -->
         <div class="text-center mb-10">
@@ -441,4 +442,5 @@
         displayFilePreview([]);
     }
 </script>
+
 @endsection

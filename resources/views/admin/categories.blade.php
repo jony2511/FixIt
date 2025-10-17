@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Categories Management - Admin Panel')
+@section('page-title', 'Categories Management')
+@section('page-description', 'Configure request categories and settings')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>

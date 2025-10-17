@@ -1,17 +1,18 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-gray-800 leading-tight">
-                <i class="fas fa-box mr-2"></i>Order #{{ $order->order_number }}
-            </h2>
-            <a href="{{ route('orders.index') }}" class="text-blue-600 hover:text-blue-700">
-                <i class="fas fa-arrow-left mr-2"></i>Back to Orders
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'Order Details')
+@section('page-title', 'Order #' . $order->order_number)
+@section('page-description', 'View your order details and status')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-6">
+                <a href="{{ route('orders.index') }}" class="text-blue-600 hover:text-blue-700">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Orders
+                </a>
+            </div>
+            
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Order Details -->
                 <div class="lg:col-span-2 space-y-6">
@@ -264,4 +265,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

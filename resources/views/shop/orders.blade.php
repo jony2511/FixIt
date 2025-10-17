@@ -1,12 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <i class="fas fa-box mr-2"></i>{{ __('My Orders') }}
-        </h2>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'My Orders')
+@section('page-title', 'My Orders')
+@section('page-description', 'Track your purchase history and order status')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
             @if($orders->count() > 0)
                 <div class="space-y-4">
                     @foreach($orders as $order)
@@ -134,4 +134,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+@endsection

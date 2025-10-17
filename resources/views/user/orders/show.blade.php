@@ -1,10 +1,14 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Order #{{ $order->id }} Details
-            </h2>
-            <div class="flex space-x-3">
+@extends('layouts.sidebar')
+
+@section('title', 'Order Details')
+@section('page-title', 'Order #' . $order->id . ' Details')
+@section('page-description', 'View your order details and track shipment')
+
+@section('content')
+    <div class="space-y-6">
+        
+        <!-- Back Button and Actions -->
+        <div class="flex items-center justify-between mb-6">
                 <a href="{{ route('user.orders') }}" class="text-blue-600 hover:text-blue-800">
                     ← Back to Orders
                 </a>
@@ -18,11 +22,6 @@
                     </a>
                 @endif
             </div>
-        </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
             <!-- Order Status Card -->
             <div class="bg-white rounded-lg shadow p-6">
@@ -295,6 +294,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
-</x-app-layout>
+@endsection

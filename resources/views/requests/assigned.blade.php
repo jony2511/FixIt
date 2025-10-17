@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Assigned Requests')
+@section('page-title', 'Assigned Requests')
+@section('page-description', 'Requests assigned to you for resolution')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-6xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Assigned Requests</h1>

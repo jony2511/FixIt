@@ -1,18 +1,11 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('My Orders') }}
-            </h2>
-            <a href="{{ route('user.dashboard') }}" class="text-blue-600 hover:text-blue-800">
-                ← Back to Dashboard
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg">
+@section('title', 'My Orders')
+@section('page-title', 'My Orders')
+@section('page-description', 'Track and manage your purchase history')
+
+@section('content')
+    <div class="bg-white shadow rounded-lg">
                 
                 <!-- Filter Tabs -->
                 <div class="border-b border-gray-200">
@@ -317,5 +310,4 @@
             }
         });
     </script>
-    @endpush
-</x-app-layout>
+@endsection

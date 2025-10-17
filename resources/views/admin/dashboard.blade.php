@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Admin Dashboard')
+@section('page-title', 'Admin Dashboard')
+@section('page-description', 'Manage users, requests, and system settings')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto">
     <!-- Header -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>

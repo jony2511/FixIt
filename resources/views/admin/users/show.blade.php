@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'User Details - Admin Panel')
+@section('page-title', 'User Details')
+@section('page-description', "View and manage {{ $user->name }}'s account")
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>

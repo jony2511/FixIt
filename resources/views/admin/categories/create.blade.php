@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Create Category - Admin Panel')
+@section('page-title', 'Create New Category')
+@section('page-description', 'Add a new maintenance request category')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-4xl mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
         <div>

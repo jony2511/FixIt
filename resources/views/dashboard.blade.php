@@ -1,10 +1,276 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'FixIT') }} - Newsfeed - Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Ensure gradient background works */
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #4f46e5 0%, #9333ea 50%, #ec4899 100%);
+        }
+        
+        /* Smooth scrollbar for sidebar */
+        .sidebar-gradient::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar-gradient::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-gradient::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        
+        .sidebar-gradient::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="w-72 sidebar-gradient text-white flex-shrink-0 overflow-y-auto shadow-2xl" x-data="{ open: false }">
+            <div class="p-6">
+                <!-- Logo -->
+                <a href="{{ route('home') }}" class="flex items-center space-x-3 mb-8">
+                    <div class="w-12 h-12">
+                        <img src="{{ asset('images/image1.png') }}" alt="FixIt Solutions" class="object-contain">
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold text-white">FixIt</span>
+                        <span class="text-xs text-purple-200 -mt-1">Repair & E-Commerce</span>
+                    </div>
+                </a>
 
-@section('title', 'Newsfeed - Dashboard')
+                <!-- User Profile Card -->
+                <div class="rounded-xl p-4 mb-6 border border-white border-opacity-20" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);">
+                    <div class="flex items-center mb-3">
+                        <img class="h-12 w-12 rounded-full ring-2 ring-white" src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
+                        <div class="ml-3 flex-1">
+                            <h3 class="text-sm font-semibold text-white">{{ auth()->user()->name }}</h3>
+                            <span class="inline-block px-2 py-0.5 text-xs rounded-full mt-1" style="background: rgba(255, 255, 255, 0.2);">
+                                {{ auth()->user()->role_name }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-@section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-    <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Navigation Links -->
+                <nav class="space-y-2">
+                    <a href="{{ route('dashboard') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('dashboard') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-stream w-5 mr-3"></i>
+                        <span>Newsfeed</span>
+                    </a>
+                    
+                    <a href="{{ route('requests.create') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('requests.create') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('requests.create') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-plus-circle w-5 mr-3"></i>
+                        <span>New Request</span>
+                    </a>
+                    
+                    <a href="{{ route('requests.my') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('requests.my') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('requests.my') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-tools w-5 mr-3"></i>
+                        <span>My Requests</span>
+                    </a>
+                    
+                    <a href="{{ route('blogs.index') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('blogs.*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('blogs.*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-blog w-5 mr-3"></i>
+                        <span>Blog</span>
+                    </a>
+                    
+                    <a href="{{ route('shop.index') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('shop.*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('shop.*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-store w-5 mr-3"></i>
+                        <span>Shop</span>
+                    </a>
+                    
+                    <a href="{{ route('user.orders') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('user.orders*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('user.orders*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-shopping-bag w-5 mr-3"></i>
+                        <span>My Orders</span>
+                    </a>
+                    
+                    <a href="{{ route('user.dashboard') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('user.dashboard*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('user.dashboard*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-tachometer-alt w-5 mr-3"></i>
+                        <span>My Dashboard</span>
+                    </a>
+                    
+                    <a href="{{ route('cart.index') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('cart.*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('cart.*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-shopping-cart w-5 mr-3"></i>
+                        <span>Cart</span>
+                        @php
+                            $cartCount = \App\Models\Cart::where(function($query) {
+                                if (Auth::id()) {
+                                    $query->where('user_id', Auth::id());
+                                } else {
+                                    $query->where('session_id', Session::getId());
+                                }
+                            })->count();
+                        @endphp
+                        @if($cartCount > 0)
+                            <span class="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold shadow-lg">{{ $cartCount }}</span>
+                        @endif
+                    </a>
+                    
+                    @if(auth()->user()->isTechnician())
+                    <a href="{{ route('requests.assigned') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('requests.assigned') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('requests.assigned') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-user-check w-5 mr-3"></i>
+                        <span>Assigned to Me</span>
+                    </a>
+                    @endif
+                    
+                    @if(auth()->user()->isAdmin())
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {{ request()->routeIs('admin.*') ? 'font-semibold' : '' }}"
+                       style="{{ request()->routeIs('admin.*') ? 'background: rgba(255, 255, 255, 0.2); color: white;' : 'color: rgba(233, 213, 255, 1);' }}"
+                       onmouseover="if(!this.classList.contains('font-semibold')) this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="if(!this.classList.contains('font-semibold')) this.style.background='transparent'">
+                        <i class="fas fa-cog w-5 mr-3"></i>
+                        <span>Admin Panel</span>
+                    </a>
+                    @endif
+
+                    <div class="border-t my-4" style="border-color: rgba(255, 255, 255, 0.2);"></div>
+
+                    <a href="{{ route('profile.edit') }}" 
+                       class="flex items-center px-4 py-3 rounded-lg transition-all duration-200"
+                       style="color: rgba(233, 213, 255, 1);"
+                       onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'"
+                       onmouseout="this.style.background='transparent'">
+                        <i class="fas fa-user w-5 mr-3"></i>
+                        <span>Profile</span>
+                    </a>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" 
+                                class="w-full flex items-center px-4 py-3 rounded-lg transition-all duration-200"
+                                style="color: rgba(233, 213, 255, 1);"
+                                onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'"
+                                onmouseout="this.style.background='transparent'">
+                            <i class="fas fa-sign-out-alt w-5 mr-3"></i>
+                            <span>Log Out</span>
+                        </button>
+                    </form>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 overflow-y-auto">
+            <!-- Top Header Bar -->
+            <header class="bg-white shadow-sm sticky top-0 z-40">
+                <div class="px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-900">Newsfeed</h1>
+                            <p class="text-sm text-gray-600">Stay updated with all service requests</p>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <!-- Notifications -->
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open; if(open) loadNotifications();" class="relative p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition">
+                                    <i class="fas fa-bell text-xl"></i>
+                                    @php
+                                        $unreadCount = auth()->user()->unreadNotifications->count();
+                                    @endphp
+                                    @if($unreadCount > 0)
+                                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                                            {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                        </span>
+                                    @endif
+                                </button>
+                                
+                                <!-- Notifications Dropdown -->
+                                <div x-show="open" 
+                                     @click.away="open = false"
+                                     x-transition:enter="transition ease-out duration-200"
+                                     x-transition:enter-start="opacity-0 transform scale-95"
+                                     x-transition:enter-end="opacity-100 transform scale-100"
+                                     x-transition:leave="transition ease-in duration-75"
+                                     x-transition:leave-start="opacity-100 transform scale-100"
+                                     x-transition:leave-end="opacity-0 transform scale-95"
+                                     class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl border border-gray-200"
+                                     style="display: none; z-index: 99999; position: fixed; top: 60px; right: 20px;">
+                                    <div class="p-4 border-b border-gray-200">
+                                        <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
+                                    </div>
+                                    <div class="max-h-96 overflow-y-auto" id="notifications-container">
+                                        <div class="p-4 text-center text-gray-500">Loading...</div>
+                                    </div>
+                                    <div class="p-3 border-t border-gray-200 text-center">
+                                        <button onclick="markAllAsRead()" class="text-sm text-blue-600 hover:text-blue-700">
+                                            Mark all as read
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-6">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col lg:flex-row gap-6">
         
         <!-- Left Sidebar - User Stats & Quick Actions -->
         <div class="lg:w-1/4">
@@ -634,4 +900,64 @@ function aiChat() {
 }
 </script>
 
-@endsection
+<!-- Notification Script -->
+<script>
+function loadNotifications() {
+    fetch('{{ route("notifications.get") }}')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('notifications-container');
+            const notifications = data.notifications || [];
+            
+            if (notifications.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-gray-500">No notifications</div>';
+                return;
+            }
+            
+            container.innerHTML = notifications.map(notification => `
+                <div class="p-4 border-b border-gray-200 hover:bg-gray-50 transition ${notification.read_at ? '' : 'bg-blue-50'}">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            ${notification.read_at ? 
+                                '<i class="fas fa-envelope-open text-gray-400"></i>' : 
+                                '<i class="fas fa-envelope text-blue-600"></i>'
+                            }
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-gray-900">${notification.data.title || 'Notification'}</p>
+                            <p class="text-sm text-gray-600 mt-1">${notification.data.message}</p>
+                            <p class="text-xs text-gray-400 mt-1">${new Date(notification.created_at).toLocaleString()}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(error => {
+            console.error('Error loading notifications:', error);
+            document.getElementById('notifications-container').innerHTML = 
+                '<div class="p-4 text-center text-red-500">Failed to load notifications</div>';
+        });
+}
+
+function markAllAsRead() {
+    fetch('{{ route("notifications.mark-all-read") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(() => {
+        loadNotifications();
+        location.reload();
+    })
+    .catch(error => console.error('Error marking notifications as read:', error));
+}
+</script>
+
+</main>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,18 +1,17 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('My Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            
-            <!-- Welcome Section -->
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-lg text-white">
-                <h3 class="text-2xl font-bold mb-2">Welcome back, {{ Auth::user()->name }}!</h3>
-                <p class="text-blue-100">Here's an overview of your orders and activities.</p>
-            </div>
+@section('title', 'My Dashboard')
+@section('page-title', 'My Dashboard')
+@section('page-description', 'Overview of your orders and activities')
+
+@section('content')
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-lg text-white">
+            <h3 class="text-2xl font-bold mb-2">Welcome back, {{ Auth::user()->name }}!</h3>
+            <p class="text-blue-100">Here's an overview of your orders and activities.</p>
+        </div>
 
             <!-- Statistics Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -249,4 +248,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

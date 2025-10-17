@@ -1,17 +1,19 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $product->name }}
-            </h2>
-            <a href="{{ route('shop.index') }}" class="text-blue-600 hover:text-blue-700">
-                <i class="fas fa-arrow-left mr-2"></i>Back to Shop
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', $product->name)
+@section('page-title', 'Product Details')
+@section('page-description', 'View product information and add to cart')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
+            <!-- Back Button -->
+            <div class="mb-6">
+                <a href="{{ route('shop.index') }}" class="text-blue-600 hover:text-blue-700">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Shop
+                </a>
+            </div>
+            
             <!-- Product Details -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -130,4 +132,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+@endsection

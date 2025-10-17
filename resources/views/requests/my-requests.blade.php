@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'My Requests')
+@section('page-title', 'My Requests')
+@section('page-description', 'Track all your submitted maintenance requests')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-6xl mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
         <div>

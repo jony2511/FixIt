@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.sidebar')
 
 @section('title', 'Contact Messages - Admin Panel')
+@section('page-title', 'Contact Messages')
+@section('page-description', 'Manage customer inquiries and messages')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">

@@ -1,12 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <i class="fas fa-shopping-cart mr-2"></i>{{ __('Shopping Cart') }}
-        </h2>
-    </x-slot>
+@extends('layouts.sidebar')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+@section('title', 'Shopping Cart')
+@section('page-title', 'Shopping Cart')
+@section('page-description', 'Review your items before checkout')
+
+@section('content')
+    <div>
+        <div class="max-w-7xl mx-auto">
             @if($cartItems->count() > 0)
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Cart Items -->
@@ -160,4 +160,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+@endsection
