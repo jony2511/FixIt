@@ -109,7 +109,7 @@ class AIChatController extends Controller
             if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
                 $aiResponse = trim($data['candidates'][0]['content']['parts'][0]['text']);
                 Log::info('Gemini AI response successful', ['response_length' => strlen($aiResponse)]);
-                return "🤖 **Gemini AI:** " . $aiResponse;
+                return "🤖 **FixIt AI:** " . $aiResponse;
             }
             
             // Check for errors in response

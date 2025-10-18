@@ -5,11 +5,53 @@
 @section('page-description', 'Track and manage your purchase history')
 
 @section('content')
-    <div class="bg-white shadow rounded-lg">
-                
-                <!-- Filter Tabs -->
-                <div class="border-b border-gray-200">
-                    <nav class="flex space-x-8 px-6" aria-label="Tabs">
+    <div class="space-y-8 max-w-7xl mx-auto">
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="bg-white rounded-2xl shadow flex items-center justify-between p-5">
+                <div>
+                    <p class="text-sm text-gray-500">Total Orders</p>
+                    <p class="mt-2 text-2xl font-bold text-gray-900">{{ $statusCounts['all'] }}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow flex items-center justify-between p-5">
+                <div>
+                    <p class="text-sm text-gray-500">Pending</p>
+                    <p class="mt-2 text-2xl font-bold text-blue-600">{{ $statusCounts['pending'] }}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow flex items-center justify-between p-5">
+                <div>
+                    <p class="text-sm text-gray-500">Processing</p>
+                    <p class="mt-2 text-2xl font-bold text-yellow-600">{{ $statusCounts['processing'] }}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center">
+                    <i class="fas fa-cogs"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl shadow flex items-center justify-between p-5">
+                <div>
+                    <p class="text-sm text-gray-500">Delivered</p>
+                    <p class="mt-2 text-2xl font-bold text-green-600">{{ $statusCounts['delivered'] }}</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
+
+            <!-- Filter Tabs -->
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
                         <a href="{{ route('user.orders') }}" 
                            class="py-4 px-1 border-b-2 font-medium text-sm {{ !$status ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                             All Orders
@@ -45,12 +87,12 @@
                                 <span class="ml-2 bg-red-100 text-red-600 py-0.5 px-2.5 rounded-full text-xs">{{ $statusCounts['cancelled'] }}</span>
                             @endif
                         </a>
-                    </nav>
-                </div>
+                </nav>
+            </div>
 
-                <!-- Orders List -->
-                @if($orders->count() > 0)
-                    <div class="divide-y divide-gray-200">
+            <!-- Orders List -->
+            @if($orders->count() > 0)
+                <div class="divide-y divide-gray-200">
                         @foreach($orders as $order)
                         <div class="p-6 hover:bg-gray-50 transition">
                             <div class="flex items-center justify-between">
@@ -165,15 +207,15 @@
                             </div>
                         </div>
                         @endforeach
-                    </div>
+                </div>
 
-                    <!-- Pagination -->
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        {{ $orders->links() }}
-                    </div>
-                @else
-                    <!-- Empty State -->
-                    <div class="text-center py-12">
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200">
+                    {{ $orders->links() }}
+                </div>
+            @else
+                <!-- Empty State -->
+                <div class="text-center py-12">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
@@ -197,8 +239,8 @@
                             </a>
                         </div>
                     </div>
-                @endif
-            </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -223,8 +265,8 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
+@push('scripts')
+<script>
         function trackOrder(orderId) {
             document.getElementById('trackOrderModal').classList.remove('hidden');
             
@@ -310,4 +352,5 @@
             }
         });
     </script>
+@endpush
 @endsection

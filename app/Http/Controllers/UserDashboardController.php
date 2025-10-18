@@ -158,6 +158,7 @@ class UserDashboardController extends Controller
             'order' => [
                 'id' => $order->id,
                 'status' => $order->order_status,
+                'order_status' => $order->order_status,
                 'created_at' => $order->created_at->format('M d, Y h:i A'),
                 'updated_at' => $order->updated_at->format('M d, Y h:i A'),
                 'total_amount' => number_format($order->total_amount, 2),
