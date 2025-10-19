@@ -7,6 +7,8 @@
 
         <title>{{ config('app.name', 'FixIT') }} - @yield('title', 'Repair and E-commerce Services')</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('images/image1.png') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

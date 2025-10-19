@@ -421,111 +421,183 @@
 
             <!-- Requests Feed -->
             @forelse($requests as $request)
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6 overflow-hidden hover:shadow-md transition duration-200">
-                    <!-- Request Header -->
-                    <div class="p-6 pb-4">
-                        <div class="flex items-start justify-between">
-                            <div class="flex items-center flex-1">
-                                <img class="h-12 w-12 rounded-full" 
-                                     src="{{ $request->user->avatar_url }}" 
-                                     alt="{{ $request->user->name }}">
-                                <div class="ml-4">
-                                    <h4 class="text-lg font-semibold text-gray-900">{{ $request->title }}</h4>
-                                    <div class="flex items-center text-sm text-gray-500 mt-1">
-                                        <span>{{ $request->user->name }}</span>
-                                        <span class="mx-2">•</span>
-                                        <span>{{ $request->created_at->diffForHumans() }}</span>
-                                        <span class="mx-2">•</span>
-                                        <span class="flex items-center">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                @php
+                    $attachmentCount = $request->files->count();
+                    $previewFiles = $request->files->take(3);
+                    $extraAttachments = max($attachmentCount - $previewFiles->count(), 0);
+                    $latestComment = $request->comments->sortByDesc('created_at')->first();
+                @endphp
+                <article class="relative bg-white rounded-3xl border border-gray-200/80 shadow-sm mb-6 overflow-hidden transition duration-200 hover:shadow-lg hover:-translate-y-1">
+                    <span class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></span>
+
+                    <div class="p-6 md:p-8 ">
+                        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 border-b border-blue-500 pb-6">
+                            <div class="flex items-start gap-4">
+                                <div class="relative shrink-0">
+                                    <img class="h-14 w-14 rounded-2xl object-cover ring-4 ring-slate-100" 
+                                         src="{{ $request->user->avatar_url }}" 
+                                         alt="{{ $request->user->name }}">
+                                    <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full bg-slate-900 text-black shadow-lg">#{{ $request->ticket_reference ?? $request->id }}</span>
+                                </div>
+
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                                        <span>Maintenance Request</span>
+                                        <span class="h-1.5 w-1.5 rounded-full bg-gray-200"></span>
+                                        <span>{{ $request->created_at->format('M d, Y • g:i A') }}</span>
+                                    </div>
+                                    <h4 class="mt-1 text-xl md:text-2xl font-semibold text-gray-900 leading-tight">{{ $request->title }}</h4>
+                                    <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            {{ $request->user->name }}
+                                        </span>
+                                        <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"></path>
                                             </svg>
                                             {{ $request->location }}
+                                        </span>
+                                        <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 8v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8" />
+                                            </svg>
+                                            {{ $request->user->email }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-center space-x-2">
+
+                            <div class="flex flex-wrap items-center justify-end gap-2">
                                 @if($request->category)
-                                    <span class="px-3 py-1 text-xs font-medium rounded-full" 
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full shadow-sm" 
                                           style="background-color: {{ $request->category->color }}20; color: {{ $request->category->color }};">
                                         {{ $request->category->name }}
                                     </span>
                                 @endif
-                                
-                                <span class="px-3 py-1 text-xs font-medium rounded-full {{ $request->priority_badge_color }}">
+
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $request->priority_badge_color }}">
                                     {{ $request->priority_name }}
+                                </span>
+
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full {{ $request->status_badge_color }}">
+                                    {{ $request->status_name }}
                                 </span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Request Content -->
-                    <div class="px-6 pb-4">
-                        <p class="text-gray-700 leading-relaxed">{{ $request->description }}</p>
-                        
-                        @if($request->files->count() > 0)
-                        <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-                            @foreach($request->files->take(3) as $file)
-                                @if($file->is_image)
-                                    <img src="{{ asset('storage/' . $file->file_path) }}" 
-                                         alt="Request attachment" 
-                                         class="w-full h-32 object-cover rounded-lg">
-                                @endif
-                            @endforeach
-                            
-                            @if($request->files->count() > 3)
-                                <div class="w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                                    <span class="text-gray-500 font-medium">+{{ $request->files->count() - 3 }} more</span>
+
+                        <div class="mt-6 space-y-6">
+                            <p class="text-gray-700 leading-relaxed">{{ $request->description }}</p>
+
+                            @if($attachmentCount > 0)
+                                <div class="flex flex-col gap-3">
+                                    <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L20 7"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 5h5v5"></path>
+                                        </svg>
+                                        Attachments
+                                    </div>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                        @foreach($previewFiles as $file)
+                                            @if($file->is_image)
+                                                <div class="relative overflow-hidden rounded-2xl group border border-gray-200">
+                                                    <img src="{{ asset('storage/' . $file->file_path) }}" 
+                                                         alt="Request attachment" 
+                                                         class="w-full h-32 object-cover transition duration-200 group-hover:scale-105">
+                                                    <span class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition"></span>
+                                                </div>
+                                            @else
+                                                <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100">
+                                                    <span>{{ basename($file->file_path) }}</span>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5v14m7-7H5"></path>
+                                                    </svg>
+                                                </a>
+                                            @endif
+                                        @endforeach
+
+                                        @if($extraAttachments > 0)
+                                            <div class="flex items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/60 text-gray-500 font-semibold text-sm">
+                                                +{{ $extraAttachments }} more
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($latestComment)
+                                <div class="rounded-2xl border border-gray-200 bg-gray-50/80 p-4">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
+                                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m1 8l3-3h4a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v6a2 2 0 002 2h3v5z"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <div class="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+                                                <span class="font-semibold text-gray-700">{{ $latestComment->user->name ?? 'Team Member' }}</span>
+                                                <span class="h-1 w-1 rounded-full bg-gray-300"></span>
+                                                <span>{{ optional($latestComment->created_at)->diffForHumans() }}</span>
+                                            </div>
+                                            <p class="mt-1 text-sm text-gray-700 leading-relaxed">{{ \Illuminate\Support\Str::limit($latestComment->content ?? $latestComment->body ?? '', 180) }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </div>
-                        @endif
-                    </div>
-                    
-                    <!-- Request Footer -->
-                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                <span class="px-3 py-1 rounded-full text-xs font-medium {{ $request->status_badge_color }}">
-                                    {{ $request->status_name }}
-                                </span>
-                                
+
+                        <div class="mt-8 border-t border-gray-100 pt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                            <div class="flex flex-wrap items-center gap-5 text-sm text-gray-500">
                                 @if($request->assignedTechnician)
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
+                                    <span class="flex items-center gap-2 text-gray-600">
+                                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                        </span>
                                         Assigned to {{ $request->assignedTechnician->name }}
                                     </span>
                                 @endif
-                                
-                                @if($request->comments->count() > 0)
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+
+                                <span class="flex items-center gap-2">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h4m5 8l-4-4H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-3v5z"></path>
                                         </svg>
-                                        {{ $request->comments->count() }} comments
                                     </span>
-                                @endif
-                                
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
+                                    {{ $request->comments->count() }} comments
+                                </span>
+
+                                <span class="flex items-center gap-2">
+                                    <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </span>
                                     {{ $request->views_count }} views
                                 </span>
                             </div>
-                            
-                            <a href="{{ route('requests.show', $request) }}" 
-                               class="text-blue-600 hover:text-blue-800 font-medium text-sm">
-                                View Details →
-                            </a>
+
+                            <div class="flex flex-wrap items-center gap-3">
+                                <a href="{{ route('requests.show', $request) }}" 
+                                   class="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:border-gray-300 transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                    View Details
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </article>
             @empty
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
