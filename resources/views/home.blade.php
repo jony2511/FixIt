@@ -500,7 +500,7 @@
 
 </div>
 
-<!-- About Us Section -->
+<!-- Client Testimonials Section -->
 <div class="relative py-24 bg-gray-900 overflow-hidden" style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 30%, #1a202c 70%, #000000 100%);">
     <!-- Dark Overlay -->
     <div class="absolute inset-0 bg-black/40"></div>
@@ -516,207 +516,91 @@
         <!-- Section Header -->
         <div class="text-center mb-16 relative z-20">
             <div class="inline-flex items-center px-6 py-3 bg-white/25 backdrop-blur-sm rounded-full text-white border border-white/40 text-sm font-semibold mb-6 shadow-2xl">
-                <i class="fas fa-info-circle mr-2 text-cyan-300"></i>
-                About FixIT Solutions
+                <i class="fas fa-quote-left mr-2 text-cyan-300"></i>
+                Client Testimonials
             </div>
             <h2 class="text-5xl lg:text-6xl font-black mb-6" style="color: #ffffff; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
-                We're <span style="background: linear-gradient(135deg, #00d4ff 0%, #5b21b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">revolutionizing</span>
-                <br>maintenance services
+                What Our <span style="background: linear-gradient(135deg, #00d4ff 0%, #5b21b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">Clients</span>
+                <br>Say About Us
             </h2>
             <p class="text-xl max-w-3xl mx-auto leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">
-                Founded with a vision to transform how businesses handle maintenance, we combine cutting-edge technology 
-                with expert craftsmanship to deliver unparalleled service experiences.
+                Don't just take our word for it – hear from businesses that have transformed their maintenance operations with FixIT
             </p>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-            <!-- Left Content -->
-            <div class="space-y-8 relative z-20">
-                <div class="space-y-6">
-                    <h3 class="text-3xl font-bold" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Our Story</h3>
-                    <p class="text-lg leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                        Since our inception, FixIT has been at the forefront of maintenance innovation. What started as a small team 
-                        of passionate technicians has evolved into a comprehensive solution that serves thousands of clients worldwide.
-                    </p>
-                    <p class="text-lg leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                        We believe that maintenance shouldn't be a hassle. That's why we've built an intelligent platform that 
-                        streamlines every aspect of the service process, from initial request to final completion.
-                    </p>
-                </div>
+        @if($testimonials->count() > 0)
+            <!-- Testimonials Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-20">
+                @foreach($testimonials as $testimonial)
+                    <div class="group relative">
+                        <!-- Card -->
+                        <div class="h-full rounded-3xl p-8 shadow-2xl transform transition-all duration-300 group-hover:scale-105 group-hover:-translate-y-2" 
+                             style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.3);">
+                            
+                            <!-- Quote Icon -->
+                            <div class="mb-6">
+                                <i class="fas fa-quote-left text-4xl text-cyan-400 opacity-50"></i>
+                            </div>
 
-                <!-- Key Metrics -->
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div class="text-3xl font-black mb-2" style="color: #00d4ff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">500+</div>
-                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Expert Technicians</div>
+                            <!-- Testimonial Text -->
+                            <p class="text-lg leading-relaxed mb-8 min-h-[120px]" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
+                                "{{ $testimonial->testimonial_text }}"
+                            </p>
+
+                            <!-- Client Info -->
+                            <div class="flex items-center space-x-4 mt-auto">
+                                <!-- Client Photo -->
+                                @if($testimonial->client_photo)
+                                    <img src="{{ asset('storage/' . $testimonial->client_photo) }}" 
+                                         alt="{{ $testimonial->client_name }}" 
+                                         class="w-16 h-16 rounded-full object-cover border-2 border-white/30 shadow-xl">
+                                @else
+                                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-full flex items-center justify-center border-2 border-white/30 shadow-xl">
+                                        <span class="text-white font-bold text-2xl">{{ substr($testimonial->client_name, 0, 1) }}</span>
+                                    </div>
+                                @endif
+
+                                <!-- Client Details -->
+                                <div>
+                                    <div class="font-bold text-lg" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                                        {{ $testimonial->client_name }}
+                                    </div>
+                                    <div class="text-sm" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">
+                                        {{ $testimonial->client_position }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Star Rating -->
+                            <div class="flex space-x-1 mt-4">
+                                @for($i = 0; $i < 5; $i++)
+                                    <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                @endfor
+                            </div>
+                        </div>
+
+                        <!-- Glow Effect on Hover -->
+                        <div class="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-500/30 to-purple-600/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                     </div>
-                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div class="text-3xl font-black mb-2" style="color: #a855f7; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">10K+</div>
-                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Happy Clients</div>
-                    </div>
-                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div class="text-3xl font-black mb-2" style="color: #ec4899; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">99.9%</div>
-                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Uptime Guarantee</div>
-                    </div>
-                    <div class="rounded-2xl p-6 shadow-2xl" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div class="text-3xl font-black mb-2" style="color: #fbbf24; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">24/7</div>
-                        <div class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">Support Available</div>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
-            <!-- Right Illustration -->
-            <div class="relative z-20">
-                <!-- Main Card -->
-                <div class="relative rounded-3xl p-8 shadow-2xl" style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.4);">
-                    <!-- Header -->
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center">
-                                <i class="fas fa-cog text-white text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold" style="color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">FixIT Dashboard</div>
-                                <div class="text-sm" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Real-time Operations</div>
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <div class="w-3 h-3 bg-red-400 rounded-full"></div>
-                            <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                            <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                        </div>
-                    </div>
-
-                    <!-- Activity Feed -->
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center shadow-lg">
-                                <i class="fas fa-check text-white text-xs"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">HVAC Maintenance Completed</div>
-                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Building A - Floor 3</div>
-                            </div>
-                            <div class="text-green-400 text-xs font-semibold">2 min ago</div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center shadow-lg">
-                                <i class="fas fa-wrench text-white text-xs"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Plumbing Repair In Progress</div>
-                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Kitchen Area - Leak Detection</div>
-                            </div>
-                            <div class="text-blue-400 text-xs font-semibold">15 min ago</div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 p-3 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
-                            <div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center shadow-lg">
-                                <i class="fas fa-bolt text-white text-xs"></i>
-                            </div>
-                            <div class="flex-1">
-                                <div class="text-sm font-medium" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Electrical Inspection Scheduled</div>
-                                <div class="text-xs" style="color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.6);">Main Panel - Safety Check</div>
-                            </div>
-                            <div class="text-purple-400 text-xs font-semibold">1 hour ago</div>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="mt-6 p-4 rounded-xl" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2);">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold" style="color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">Today's Progress</span>
-                            <span class="text-cyan-400 text-sm font-bold">87%</span>
-                        </div>
-                        <div class="w-full rounded-full h-2" style="background: rgba(255, 255, 255, 0.3);">
-                            <div class="bg-gradient-to-r from-cyan-500 to-purple-600 h-2 rounded-full animate-pulse shadow-lg" style="width: 87%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Floating Elements -->
-                <div class="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl flex items-center justify-center shadow-xl animate-float">
-                    <i class="fas fa-chart-line text-white text-xl"></i>
-                </div>
-
-                <div class="absolute -bottom-4 -left-4 w-14 h-14 bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl flex items-center justify-center shadow-xl animate-float" style="animation-delay: 1s;">
-                    <i class="fas fa-users text-white"></i>
-                </div>
-
-                <div class="absolute top-1/2 -left-8 w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center shadow-xl animate-float" style="animation-delay: 0.5s;">
-                    <i class="fas fa-shield-alt text-white text-sm"></i>
-                </div>
+            <!-- Learn More Button -->
+            <div class="text-center mt-16">
+                <a href="{{ route('about') }}" 
+                   class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl font-bold text-lg text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-info-circle mr-3"></i>
+                    Learn More About Us
+                    <i class="fas fa-arrow-right ml-3"></i>
+                </a>
             </div>
-        </div>
-
-        <!-- Values Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Innovation -->
-            <div class="group text-center">
-                <div class="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="fas fa-lightbulb text-3xl text-white"></i>
-                </div>
-                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Innovation</h4>
-                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                    We continuously invest in cutting-edge technology and AI-powered solutions to stay ahead of industry trends 
-                    and deliver superior service experiences.
-                </p>
+        @else
+            <!-- No Testimonials Message -->
+            <div class="text-center py-16">
+                <i class="fas fa-quote-left text-white/20 text-6xl mb-6"></i>
+                <p class="text-xl text-white/60">Testimonials coming soon...</p>
             </div>
-
-            <!-- Reliability -->
-            <div class="group text-center relative z-20">
-                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="fas fa-shield-check text-3xl text-white"></i>
-                </div>
-                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Reliability</h4>
-                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                    Our commitment to excellence means you can count on us for consistent, high-quality service delivery, 
-                    backed by our industry-leading uptime guarantee.
-                </p>
-            </div>
-
-            <!-- Excellence -->
-            <div class="group text-center relative z-20">
-                <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <i class="fas fa-star text-3xl text-white"></i>
-                </div>
-                <h4 class="text-2xl font-bold mb-4" style="color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Excellence</h4>
-                <p class="leading-relaxed" style="color: #e2e8f0; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">
-                    We maintain the highest standards in every aspect of our service, from initial consultation to project completion, 
-                    ensuring exceptional results every time.
-                </p>
-            </div>
-        </div>
-
-        <!-- Call to Action -->
-        <div class="text-center mt-16">
-            <div class="inline-flex flex-col sm:flex-row gap-4">
-                @guest
-                    <a href="{{ route('register') }}" 
-                       class="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl font-bold text-lg text-white overflow-hidden transition-all duration-300 transform hover:scale-105">
-                        <span class="relative z-10 flex items-center justify-center">
-                            <i class="fas fa-rocket mr-3"></i>
-                            Join Our Platform
-                        </span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </a>
-                    
-                    <a href="#services" 
-                       class="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl font-bold text-lg text-white hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-eye mr-3"></i>
-                        Explore Services
-                    </a>
-                @else
-                    <a href="{{ route('dashboard') }}" 
-                       class="inline-block px-8 py-4 bg-gradient-to-r from-green-500 to-blue-600 rounded-2xl font-bold text-lg text-white transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-tachometer-alt mr-3"></i>
-                        Access Dashboard
-                    </a>
-                @endguest
-            </div>
-        </div>
+        @endif
     </div>
 </div>
 

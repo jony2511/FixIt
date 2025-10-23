@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // ===== PUBLIC ROUTES =====
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
 
 // Test SSLCommerz credentials
 Route::get('/test-sslcommerz', [TestSSLCommerzController::class, 'testCredentials']);
@@ -173,6 +174,15 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/contact/{contact}', [\App\Http\Controllers\ContactController::class, 'show'])->name('contact.show');
     Route::delete('/contact/{contact}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contact.destroy');
     Route::post('/contact/{contact}/toggle-read', [\App\Http\Controllers\ContactController::class, 'toggleRead'])->name('contact.toggle-read');
+    
+    // Testimonial Management
+    Route::get('/testimonials', [AdminController::class, 'testimonials'])->name('testimonials.index');
+    Route::get('/testimonials/create', [AdminController::class, 'createTestimonial'])->name('testimonials.create');
+    Route::post('/testimonials', [AdminController::class, 'storeTestimonial'])->name('testimonials.store');
+    Route::get('/testimonials/{testimonial}/edit', [AdminController::class, 'editTestimonial'])->name('testimonials.edit');
+    Route::put('/testimonials/{testimonial}', [AdminController::class, 'updateTestimonial'])->name('testimonials.update');
+    Route::delete('/testimonials/{testimonial}', [AdminController::class, 'destroyTestimonial'])->name('testimonials.destroy');
+    Route::put('/testimonials/{testimonial}/toggle-active', [AdminController::class, 'toggleTestimonialActive'])->name('testimonials.toggle-active');
 });
 
 // ===== USER DASHBOARD ROUTES =====

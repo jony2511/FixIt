@@ -497,4 +497,91 @@ class AdminController extends Controller
 
         return back()->with('success', 'Order status updated successfully!');
     }
+
+    // ===== TESTIMONIAL MANAGEMENT =====
+
+    public function testimonials()
+    {
+        $testimonials = \App\Models\Testimonial::ordered()->paginate(15);
+        return view('admin.testimonials.index', compact('testimonials'));
+    }
+
+    public function createTestimonial()
+    {
+        return view('admin.testimonials.create');
+    }
+
+    public function storeTestimonial(Request $request)
+    {
+        $validated = $request->validate([
+            'client_name' => 'required|string|max:255',
+            'client_position' => 'required|string|max:255',
+            'testimonial_text' => 'required|string',
+            'client_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_active' => 'boolean',
+            'display_order' => 'integer|min:0'
+        ]);
+
+        // Handle photo upload
+        if ($request->hasFile('client_photo')) {
+            $path = $request->file('client_photo')->store('testimonials', 'public');
+            $validated['client_photo'] = $path;
+        }
+
+        \App\Models\Testimonial::create($validated);
+
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial created successfully!');
+    }
+
+    public function editTestimonial(\App\Models\Testimonial $testimonial)
+    {
+        return view('admin.testimonials.edit', compact('testimonial'));
+    }
+
+    public function updateTestimonial(Request $request, \App\Models\Testimonial $testimonial)
+    {
+        $validated = $request->validate([
+            'client_name' => 'required|string|max:255',
+            'client_position' => 'required|string|max:255',
+            'testimonial_text' => 'required|string',
+            'client_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_active' => 'boolean',
+            'display_order' => 'integer|min:0'
+        ]);
+
+        // Handle photo upload
+        if ($request->hasFile('client_photo')) {
+            // Delete old photo if exists
+            if ($testimonial->client_photo) {
+                Storage::disk('public')->delete($testimonial->client_photo);
+            }
+            $path = $request->file('client_photo')->store('testimonials', 'public');
+            $validated['client_photo'] = $path;
+        }
+
+        $testimonial->update($validated);
+
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial updated successfully!');
+    }
+
+    public function destroyTestimonial(\App\Models\Testimonial $testimonial)
+    {
+        // Delete photo if exists
+        if ($testimonial->client_photo) {
+            Storage::disk('public')->delete($testimonial->client_photo);
+        }
+
+        $testimonial->delete();
+
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial deleted successfully!');
+    }
+
+    public function toggleTestimonialActive(\App\Models\Testimonial $testimonial)
+    {
+        $testimonial->is_active = !$testimonial->is_active;
+        $testimonial->save();
+
+        $status = $testimonial->is_active ? 'activated' : 'deactivated';
+        return back()->with('success', "Testimonial {$status} successfully!");
+    }
 }

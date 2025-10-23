@@ -13,7 +13,7 @@
     </div>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <div class="flex items-center">
                 <div class="p-3 rounded-full bg-blue-100">
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <!-- <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <div class="flex items-center">
                 <div class="p-3 rounded-full bg-indigo-100">
                     <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,7 +85,7 @@
                     @endif
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Quick Actions -->
@@ -143,6 +143,16 @@
             <p class="text-gray-600 mb-4">View and manage customer contact messages</p>
             <a href="{{ route('admin.contact.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
                 View Messages
+            </a>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                <i class="fas fa-quote-left mr-2"></i>Testimonials
+            </h3>
+            <p class="text-gray-600 mb-4">Manage client testimonials on homepage</p>
+            <a href="{{ route('admin.testimonials.index') }}" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition duration-200">
+                Manage Testimonials
             </a>
         </div>
 
