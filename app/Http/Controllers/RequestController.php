@@ -105,6 +105,94 @@ class RequestController extends Controller
     }
 
     /**
+     * Show the form for editing the specified request
+     */
+    public function edit(MaintenanceRequest $request)
+    {
+        // Authorization: Allow if user owns the request OR user is admin
+        if ($request->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to edit this request.');
+        }
+
+        $categories = Category::active()->orderBy('priority')->get();
+        return view('requests.edit', compact('request', 'categories'));
+    }
+
+    /**
+     * Update the specified request in storage
+     */
+    public function update(Request $httpRequest, MaintenanceRequest $request)
+    {
+        // Authorization: Allow if user owns the request OR user is admin
+        if ($request->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to update this request.');
+        }
+
+        $validated = $httpRequest->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'priority' => 'required|in:low,medium,high,urgent',
+            'category_id' => 'required|exists:categories,id',
+            'files.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+            'remove_files' => 'nullable|array',
+            'remove_files.*' => 'exists:request_files,id',
+        ]);
+
+        // Update request data
+        $request->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'location' => $validated['location'],
+            'priority' => $validated['priority'],
+            'category_id' => $validated['category_id'],
+        ]);
+
+        // Handle file removals
+        if ($httpRequest->has('remove_files')) {
+            foreach ($httpRequest->remove_files as $fileId) {
+                $file = RequestFile::where('id', $fileId)
+                    ->where('request_id', $request->id)
+                    ->first();
+                
+                if ($file) {
+                    // Delete from storage
+                    if (Storage::disk('public')->exists($file->file_path)) {
+                        Storage::disk('public')->delete($file->file_path);
+                    }
+                    // Delete from database
+                    $file->delete();
+                }
+            }
+        }
+
+        // Handle new file uploads
+        if ($httpRequest->hasFile('files')) {
+            $currentMaxOrder = $request->files()->max('sort_order') ?? -1;
+            
+            foreach ($httpRequest->file('files') as $index => $file) {
+                $storedName = time() . '_' . ($currentMaxOrder + $index + 1) . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('request-files', $storedName, 'public');
+                
+                $request->files()->create([
+                    'original_name' => $file->getClientOriginalName(),
+                    'stored_name' => $storedName,
+                    'file_path' => $path,
+                    'mime_type' => $file->getMimeType(),
+                    'file_size' => $file->getSize(),
+                    'file_extension' => $file->getClientOriginalExtension(),
+                    'is_image' => str_starts_with($file->getMimeType(), 'image/'),
+                    'sort_order' => $currentMaxOrder + $index + 1,
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('requests.show', $request)
+            ->with('success', 'Request updated successfully!');
+    }
+
+    /**
      * Display the specified request
      */
     public function show(MaintenanceRequest $request)
@@ -387,5 +475,31 @@ class RequestController extends Controller
         ]);
 
         return back()->with('success', 'Products suggested successfully!');
+    }
+
+    /**
+     * Delete the specified request from storage.
+     * Users can delete their own requests. Admins can delete any request.
+     */
+    public function destroy(MaintenanceRequest $request)
+    {
+        // Authorization: Allow if user owns the request OR user is admin
+        if ($request->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to delete this request.');
+        }
+
+        // Delete associated files from storage
+        foreach ($request->files as $file) {
+            if (Storage::disk('public')->exists($file->file_path)) {
+                Storage::disk('public')->delete($file->file_path);
+            }
+        }
+
+        // Delete the request (cascade will handle related records)
+        $request->delete();
+
+        return redirect()
+            ->route('requests.my')
+            ->with('success', 'Request deleted successfully!');
     }
 }
