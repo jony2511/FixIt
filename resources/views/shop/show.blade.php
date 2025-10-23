@@ -1,12 +1,10 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 
-@section('title', $product->name)
-@section('page-title', 'Product Details')
-@section('page-description', 'View product information and add to cart')
+@section('title', $product->name . ' - FixIt Shop')
 
 @section('content')
-    <div>
-        <div class="max-w-7xl mx-auto">
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Back Button -->
             <div class="mb-6">
                 <a href="{{ route('shop.index') }}" class="text-blue-600 hover:text-blue-700">
@@ -79,19 +77,37 @@
                             </div>
 
                             @if($product->stock_status != 'out_of_stock')
-                                <form action="{{ route('cart.add', $product) }}" method="POST" class="space-y-4">
-                                    @csrf
-                                    <div>
-                                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
-                                        <div class="flex items-center gap-4">
-                                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->quantity }}"
-                                                class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                            <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center">
-                                                <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
-                                            </button>
+                                @auth
+                                    <form action="{{ route('cart.add', $product) }}" method="POST" class="space-y-4">
+                                        @csrf
+                                        <div>
+                                            <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                                            <div class="flex items-center gap-4">
+                                                <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->quantity }}"
+                                                    class="w-24 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center">
+                                                    <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                                                </button>
+                                            </div>
                                         </div>
+                                    </form>
+                                @else
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                                            <div class="flex items-center gap-4">
+                                                <input type="number" value="1" min="1" disabled
+                                                    class="w-24 rounded-md border-gray-300 shadow-sm bg-gray-100">
+                                                <a href="{{ route('login') }}" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md hover:from-blue-700 hover:to-purple-700 transition flex items-center">
+                                                    <i class="fas fa-sign-in-alt mr-2"></i>Login to Add to Cart
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mt-2">
+                                            <i class="fas fa-info-circle mr-1"></i>Please login to add items to your cart and make purchases.
+                                        </p>
                                     </div>
-                                </form>
+                                @endauth
                             @else
                                 <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
                                     <p class="text-red-800"><i class="fas fa-times-circle mr-2"></i>This product is currently out of stock.</p>
@@ -132,4 +148,5 @@
             @endif
         </div>
     </div>
+</div>
 @endsection

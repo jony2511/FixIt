@@ -1,12 +1,10 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 
-@section('title', $blog->title)
-@section('page-title', 'Blog Post')
-@section('page-description', 'Read the full article')
+@section('title', $blog->title . ' - FixIt Blog')
 
 @section('content')
-    <div class="bg-gray-50">
-        <div class="max-w-4xl mx-auto">
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <!-- Back Button -->
             <div class="mb-6">
@@ -341,4 +339,5 @@
             document.getElementById('reply-form-' + commentId).classList.add('hidden');
         }
     </script>
+</div>
 @endsection

@@ -1,10 +1,15 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 
-@section('title', 'FixIt Shop')
-@section('page-title', 'FixIt Shop')
-@section('page-description', 'Browse and purchase quality products')
+@section('title', 'FixIt Shop - Browse Products')
 
 @section('content')
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black gradient-text mb-4">FixIt Shop</h1>
+            <p class="text-xl text-gray-600">Browse and purchase quality products</p>
+        </div>
     <div>
         <div class="max-w-7xl mx-auto">
             <!-- Search and Filters -->
@@ -132,13 +137,19 @@
                                     <p class="text-2xl font-bold text-blue-600 mb-3">Tk.{{ number_format($product->price, 2) }}</p>
                                     
                                     @if($product->stock_status != 'out_of_stock')
-                                        <form action="{{ route('cart.add', $product) }}" method="POST" class="mt-3">
-                                            @csrf
-                                            <input type="hidden" name="quantity" value="1">
-                                            <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                                <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
-                                            </button>
-                                        </form>
+                                        @auth
+                                            <form action="{{ route('cart.add', $product) }}" method="POST" class="mt-3">
+                                                @csrf
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                                    <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                                                </button>
+                                            </form>
+                                        @else
+                                            <a href="{{ route('login') }}" class="block w-full px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center rounded-md hover:from-blue-700 hover:to-purple-700 transition">
+                                                <i class="fas fa-sign-in-alt mr-2"></i>Login to Buy
+                                            </a>
+                                        @endauth
                                     @else
                                         <button disabled class="w-full px-4 py-2 bg-gray-300 text-gray-500 rounded-md cursor-not-allowed">
                                             Out of Stock
@@ -166,4 +177,5 @@
             @endif
         </div>
     </div>
+</div>
 @endsection

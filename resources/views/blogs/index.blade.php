@@ -1,12 +1,15 @@
-@extends('layouts.sidebar')
+@extends('layouts.app')
 
-@section('title', 'Blog')
-@section('page-title', 'Blog')
-@section('page-description', 'Maxly bring the power of data science and artificial intelligence to every business.')
+@section('title', 'Blog - FixIt Solutions')
 
 @section('content')
-    <div class="bg-gray-50">
-        <div class="max-w-7xl mx-auto">
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black gradient-text mb-4">Blog</h1>
+            <p class="text-xl text-gray-600">Bringing the power of data science and artificial intelligence to every business</p>
+        </div>
             
             <!-- Search and Filter Section -->
             <div class="mb-8 bg-white rounded-lg shadow-sm p-6">
@@ -152,4 +155,5 @@
 
         </div>
     </div>
+</div>
 @endsection
