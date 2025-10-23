@@ -232,7 +232,7 @@
 </div>
 
 <!-- Services Section -->
-<div class="py-20 bg-white">
+<div id="services" class="py-20 bg-gradient-to-r from-green-100 to-blue-500">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-5xl font-black gradient-text mb-6">Our Services</h2>
@@ -496,12 +496,8 @@
     </div>
 </div>
 
-  
-
-</div>
-
 <!-- Client Testimonials Section -->
-<div class="relative py-24 bg-gray-900 overflow-hidden" style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 30%, #1a202c 70%, #000000 100%);">
+<div id="testimonials" class="relative py-24 bg-gray-900 overflow-hidden" style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 30%, #1a202c 70%, #000000 100%);">
     <!-- Dark Overlay -->
     <div class="absolute inset-0 bg-black/40"></div>
     
@@ -605,7 +601,7 @@
 </div>
 
 <!-- Contact Us Section -->
-<div class="relative py-24 overflow-hidden" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
+<div id="contact" class="relative py-24 overflow-hidden" style="background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 30%, #312e81 70%, #1e1b4b 100%);">
     <!-- Background Pattern -->
     <div class="absolute inset-0 opacity-10">
         <div class="absolute top-0 left-0 w-full h-full">
