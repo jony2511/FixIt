@@ -47,6 +47,24 @@
         .sidebar-gradient::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+        
+        /* Layout structure */
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+            padding: 1.5rem;
+        }
+        
+        /* Remove footer gaps */
+        footer {
+            margin: 0 !important;
+            width: 100% !important;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -215,6 +233,7 @@
 
         <!-- Main Content Area -->
         <div class="flex-1 overflow-y-auto">
+            <div class="dashboard-container">
             <!-- Top Header Bar -->
             <header class="bg-white shadow-sm sticky top-0 z-40">
                 <div class="px-6 py-4">
@@ -646,6 +665,12 @@
             @endif
         </div>
     </div>
+</div>
+</main>
+
+<!-- Footer -->
+@include('components.footer')
+</div>
 </div>
 
 <!-- Floating AI Assistant Button - TOP RIGHT POSITION -->

@@ -71,12 +71,34 @@
             flex-grow: 1 !important;
             overflow-y: auto !important;
             min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
         
         /* Ensure no CSS is breaking the layout */
         body {
             margin: 0 !important;
             padding: 0 !important;
+        }
+        
+        /* Footer at bottom */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        main {
+            flex: 1;
+            padding: 1.5rem;
+        }
+        
+        /* Remove footer gaps */
+        footer {
+            margin: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 100% !important;
         }
     </style>
     
@@ -248,6 +270,7 @@
 
         <!-- Main Content Area -->
         <div class="content-container flex-1 overflow-y-auto">
+            <div class="content-wrapper">
             <!-- Top Header Bar -->
             <header class="bg-white shadow-sm sticky top-0 z-40">
                 <div class="px-6 py-4">
@@ -518,9 +541,13 @@
             </header>
 
             <!-- Page Content -->
-            <main class="p-6">
+            <main>
                 @yield('content')
             </main>
+            
+            <!-- Footer -->
+            @include('components.footer')
+            </div>
         </div>
     </div>
 
