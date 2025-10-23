@@ -10,7 +10,7 @@
         <!-- Header Section with Modern Design -->
         <div class="text-center mb-10">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg mb-4">
-                <i class="fas fa-edit text-2xl text-white"></i>
+                <i class="fas fa-edit text-2xl text-black"></i>
             </div>
             <h1 class="text-4xl font-bold text-slate-900 mb-3">Edit Request</h1>
             <p class="text-lg text-slate-600 max-w-2xl mx-auto">Update your maintenance request details</p>
@@ -269,7 +269,6 @@
             </form>
         </div>
     </div>
-</div>
 
 <script>
     // Character count for description

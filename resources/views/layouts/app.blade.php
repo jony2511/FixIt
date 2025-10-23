@@ -149,16 +149,16 @@
                                 Your trusted partner for maintenance and repair services. Fast, reliable, and professional solutions for all your needs.
                             </p>
                             <div class="flex space-x-3">
-                                <a href="#" class="w-11 h-11 bg-gray-900 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
+                                <a href="https://www.facebook.com/" target="_blank" class=" w-11 h-11 bg-gray-900 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
                                     <i class="fab fa-facebook-f text-white text-sm"></i>
                                 </a>
-                                <a href="#" class="w-11 h-11 bg-gray-900 hover:bg-sky-500 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
+                                <a href="https://twitter.com/" target="_blank" class=" w-11 h-11 bg-gray-900 hover:bg-sky-500 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
                                     <i class="fab fa-twitter text-white text-sm"></i>
                                 </a>
-                                <a href="#" class="w-11 h-11 bg-gray-900 hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
+                                <a href="https://www.instagram.com/" target="_blank" class=" w-11 h-11 bg-gray-900 hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
                                     <i class="fab fa-instagram text-white text-sm"></i>
                                 </a>
-                                <a href="#" class="w-11 h-11 bg-gray-900 hover:bg-blue-700 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
+                                <a href="https://www.linkedin.com/" target="_blank" class=" w-11 h-11 bg-gray-900 hover:bg-blue-700 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:shadow-lg">
                                     <i class="fab fa-linkedin-in text-white text-sm"></i>
                                 </a>
                             </div>

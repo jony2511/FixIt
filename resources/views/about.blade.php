@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - FixIT Solutions</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/image1.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -31,7 +32,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('image1.png') }}" alt="FixIT" class="h-10 w-auto">
+                        <img src="{{ asset('images/image1.png') }}" alt="FixIT" class="h-10 w-auto">
                         <span class="ml-3 text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">FixIT</span>
                     </a>
                 </div>
@@ -243,48 +244,8 @@
         </div>
     </div>
 
+   
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <img src="{{ asset('image1.png') }}" alt="FixIT" class="h-10 w-auto">
-                        <span class="ml-3 text-2xl font-bold">FixIT</span>
-                    </div>
-                    <p class="text-gray-400">Professional maintenance solutions powered by innovation</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-gray-400 hover:text-white">Home</a></li>
-                        <li><a href="{{ route('about') }}" class="text-gray-400 hover:text-white">About</a></li>
-                        <li><a href="{{ route('shop.index') }}" class="text-gray-400 hover:text-white">Shop</a></li>
-                        <li><a href="{{ route('blogs.index') }}" class="text-gray-400 hover:text-white">Blog</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Services</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">HVAC Maintenance</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Plumbing Services</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Electrical Work</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">General Repairs</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Contact</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><i class="fas fa-envelope mr-2"></i>support@fixit.com</li>
-                        <li><i class="fas fa-phone mr-2"></i>+1 (555) 123-4567</li>
-                        <li><i class="fas fa-clock mr-2"></i>24/7 Support</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; {{ date('Y') }} FixIT Solutions. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+@include('components.footer')
 </body>
 </html>
