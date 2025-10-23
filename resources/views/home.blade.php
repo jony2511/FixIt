@@ -232,7 +232,7 @@
 </div>
 
 <!-- Services Section -->
-<div id="services" class="py-20 bg-gradient-to-r from-green-100 to-blue-500">
+<div id="services" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-5xl font-black gradient-text mb-6">Our Services</h2>
@@ -640,48 +640,48 @@
                 <!-- Contact Details -->
                 <div class="space-y-6">
                     <!-- Phone -->
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                            <i class="fas fa-phone text-white text-xl"></i>
+                    <a href="tel:+1234567890" class="flex items-center space-x-4 group hover:transform hover:scale-105 transition-all duration-300">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-phone text-white text-xl group-hover:rotate-12 transition-transform duration-300"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-semibold text-white">Phone</h4>
-                            <p class="text-blue-200">+123-456-7890</p>
+                            <h4 class="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors duration-300">Phone</h4>
+                            <p class="text-blue-200 group-hover:text-white transition-colors duration-300">+123-456-7890</p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Website -->
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                            <i class="fas fa-globe text-white text-xl"></i>
+                    <a href="{{ route('home') }}" class="flex items-center space-x-4 group hover:transform hover:scale-105 transition-all duration-300">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-globe text-white text-xl group-hover:rotate-12 transition-transform duration-300"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-semibold text-white">Website</h4>
-                            <p class="text-blue-200">www.fixit.com</p>
+                            <h4 class="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors duration-300">Website</h4>
+                            <p class="text-blue-200 group-hover:text-white transition-colors duration-300">www.fixit.com</p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Email -->
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                            <i class="fas fa-envelope text-white text-xl"></i>
+                    <a href="mailto:hello@fixit.com" class="flex items-center space-x-4 group hover:transform hover:scale-105 transition-all duration-300">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-envelope text-white text-xl group-hover:rotate-12 transition-transform duration-300"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-semibold text-white">E-Mail</h4>
-                            <p class="text-blue-200">hello@fixit.com</p>
+                            <h4 class="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors duration-300">E-Mail</h4>
+                            <p class="text-blue-200 group-hover:text-white transition-colors duration-300">hello@fixit.com</p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Address -->
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                            <i class="fas fa-map-marker-alt text-white text-xl"></i>
+                    <a href="https://www.google.com/maps/search/?api=1&query=123+Anywhere+St,+Any+City" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-4 group hover:transform hover:scale-105 transition-all duration-300">
+                        <div class="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-all duration-300">
+                            <i class="fas fa-map-marker-alt text-white text-xl group-hover:bounce transition-transform duration-300"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-semibold text-white">Address</h4>
-                            <p class="text-blue-200">123 Anywhere St., Any City</p>
+                            <h4 class="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors duration-300">Address</h4>
+                            <p class="text-blue-200 group-hover:text-white transition-colors duration-300">123 Anywhere St., Any City</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Features -->
