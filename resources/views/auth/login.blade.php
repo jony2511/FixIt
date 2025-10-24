@@ -303,6 +303,20 @@
                     @enderror
                 </div>
                 
+                <!-- Remember Me -->
+                <div class="form-group" style="margin-top: 12px; margin-bottom: 20px;">
+                    <label for="remember" class="inline-flex items-center" style="display: flex; align-items: center; cursor: pointer;">
+                        <input 
+                            id="remember" 
+                            type="checkbox" 
+                            name="remember"
+                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                            style="width: 16px; height: 16px; margin-right: 8px; cursor: pointer;"
+                        />
+                        <span style="font-size: 14px; color: white; user-select: none;">Remember me</span>
+                    </label>
+                </div>
+                
                 <!-- Login Button -->
                 <button type="submit" class="login-button">
                     Login
