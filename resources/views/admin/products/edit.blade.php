@@ -58,7 +58,7 @@
 
                             <!-- Price -->
                             <div>
-                                <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price ($) *</label>
+                                <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price (Tk.) *</label>
                                 <input type="number" name="price" id="price" required value="{{ old('price', $product->price) }}" 
                                     step="0.01" min="0"
                                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
