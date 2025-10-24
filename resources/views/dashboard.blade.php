@@ -235,7 +235,7 @@
         <div class="flex-1 overflow-y-auto">
             <div class="dashboard-container">
             <!-- Top Header Bar -->
-            <header class="bg-white shadow-sm sticky top-0 z-40">
+            <header class="bg-gradient-to-r from-green-400 to-purple-400 shadow-sm sticky top-0 z-40">
                 <div class="px-6 py-4">
                     <div class="flex items-center justify-between">
                         <div>

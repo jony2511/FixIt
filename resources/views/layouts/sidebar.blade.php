@@ -272,18 +272,18 @@
         <div class="content-container flex-1 overflow-y-auto">
             <div class="content-wrapper">
             <!-- Top Header Bar -->
-            <header class="bg-white shadow-sm sticky top-0 z-40">
+            <header class="bg-gradient-to-r from-green-400 to-purple-400 shadow-sm sticky top-0 z-40">
                 <div class="px-6 py-4">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-900">@yield('page-title', 'Dashboard')</h1>
-                            <p class="text-sm text-gray-600">@yield('page-description', '')</p>
+                            <h1 class="text-2xl font-bold text-white">@yield('page-title', 'Dashboard')</h1>
+                            <p class="text-sm text-white/90">@yield('page-description', '')</p>
                         </div>
 
                         <div class="flex items-center space-x-4">
                             <!-- Notifications -->
                             <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open; if(open) loadNotifications();" class="relative p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition">
+                                <button @click="open = !open; if(open) loadNotifications();" class="relative p-2 text-white hover:text-white hover:bg-white/20 rounded-lg transition">
                                     <i class="fas fa-bell text-xl"></i>
                                     @php
                                         $unreadCount = auth()->user()->unreadNotifications->count();
@@ -325,7 +325,7 @@
                                 <!-- AI Assistant Button -->
                                 <button 
                                     @click="showAI = true"
-                                    class="relative p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition"
+                                    class="relative p-2 text-white hover:text-white hover:bg-white/20 rounded-lg transition"
                                     aria-label="Open AI Assistant">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
