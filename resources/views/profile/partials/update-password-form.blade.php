@@ -41,7 +41,7 @@
 
         <div class="flex items-center gap-4">
             <button type="submit" 
-                class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg font-semibold hover:from-orange-700 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300 shadow-lg">
+                class="px-6 py-3 bg-gradient-to-r from-green-600 to-blue-400 text-black rounded-lg font-semibold hover:from-orange-700 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300 shadow-lg">
                 <i class="fas fa-save mr-2"></i>Update Password
             </button>
 

@@ -6,7 +6,7 @@
     <button
         type="button"
         onclick="document.getElementById('delete-modal').classList.remove('hidden')"
-        class="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 shadow-lg">
+        class="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-red rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 shadow-lg">
         <i class="fas fa-trash-alt mr-2"></i>Delete Account
     </button>
 
@@ -55,7 +55,7 @@
                     </button>
                     <button
                         type="submit"
-                        class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 shadow-lg">
+                        class="flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-black rounded-lg font-semibold hover:from-red-700 hover:to-pink-700 transition-all duration-300 shadow-lg">
                         <i class="fas fa-trash-alt mr-2"></i>Delete Account
                     </button>
                 </div>
